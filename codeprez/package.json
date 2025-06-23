@@ -20,6 +20,9 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
+    "adm-zip": "^0.5.16",
+    "highlight.js": "^11.11.1",
+    "markdown-it": "^14.1.0",
     "react-router-dom": "^7.6.2"
   },
   "devDependencies": {
