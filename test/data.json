@@ -1,1 +1,4 @@
-{}
+{
+	"title": "Présentation de l'API",
+	"members": ["John Doe", "Jane Smith", "Alice Johnson"]
+}
