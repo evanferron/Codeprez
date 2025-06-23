@@ -1,5 +1,6 @@
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
+import { Link } from 'react-router-dom'
 
 function App() {
   const ipcHandle = () => window.electron.ipcRenderer.send('ping')
@@ -24,6 +25,7 @@ function App() {
           <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
             Send IPC
           </a>
+          <Link to="/">presentation</Link>
         </div>
       </div>
       <Versions></Versions>
