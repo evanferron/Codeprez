@@ -33,6 +33,36 @@ export const unzipFile = (pathCodeprez) => {
   zip.extractAllTo(path.join(pathTemp, 'test'), true)
 }
 
-export const chooseFile = async () => {
-  return await dialog.showOpenDialog({ properties: ['openFile'] })
+export const chooseFile = async (type) => {
+  if (type === 'folder') {
+    return await dialog.showOpenDialog({
+      properties: ['openDirectory'],
+      filters: [{ name: 'Folders', extensions: [''] }]
+    })
+  }
+  return await dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [{ name: type, extensions: [type] }]
+  })
+}
+
+export const createProject = async (projectName, conf, pres, style, env, assets) => {
+  console.log('Creating project:', projectName)
+  console.log('Config:', conf)
+  console.log('Presentation:', pres)
+  console.log('Style:', style)
+  console.log('Environment', env)
+  console.log('Assets:', assets)
+  const projectPath = path.join(pathTemp, projectName)
+  fs.mkdirSync(projectPath, { recursive: true })
+  fs.copyFileSync(conf, path.join(projectPath, 'config.json'))
+  fs.copyFileSync(pres, path.join(projectPath, 'presentation.md'))
+  fs.copyFileSync(style, path.join(projectPath, 'style.css'))
+  fs.cpSync(env, path.join(projectPath, 'env'), { recursive: true })
+  fs.cpSync(assets, path.join(projectPath, 'assets'), { recursive: true })
+
+  return {
+    success: true,
+    projectPath
+  }
 }
