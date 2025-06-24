@@ -30,7 +30,9 @@ export const zipFile = (projectName, config, pres, style, env) => {
 export const unzipFile = (pathCodeprez) => {
   const zip = new AdmZip(pathCodeprez)
 
-  zip.extractAllTo(path.join(pathTemp, 'test'), true)
+  const fileName = path.basename(pathCodeprez, '.codeprez')
+
+  zip.extractAllTo(path.join(pathTemp, fileName), true)
 }
 
 export const chooseFile = async (type) => {
@@ -47,12 +49,6 @@ export const chooseFile = async (type) => {
 }
 
 export const createProject = async (projectName, conf, pres, style, env, assets) => {
-  console.log('Creating project:', projectName)
-  console.log('Config:', conf)
-  console.log('Presentation:', pres)
-  console.log('Style:', style)
-  console.log('Environment', env)
-  console.log('Assets:', assets)
   const projectPath = path.join(pathTemp, projectName)
   fs.mkdirSync(projectPath, { recursive: true })
   fs.copyFileSync(conf, path.join(projectPath, 'config.json'))

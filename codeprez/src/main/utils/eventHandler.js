@@ -23,9 +23,14 @@ export const handleChooseFile = async (type) => {
 export const handleImportProject = async () => {
   const file = await chooseFile('codeprez')
   if (file.canceled) {
-    console.log('Project import was canceled')
+    return {
+      status: 'cancelled'
+    }
   } else {
     unzipFile(file.filePaths[0])
+    return {
+      status: 'success'
+    }
   }
 }
 
