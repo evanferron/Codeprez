@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import path, { join } from 'path'
 import fs from 'fs'
 import icon from '../../resources/icon.png?asset'
-import { handleChooseFile } from './utils/eventHandler'
+import { handleChooseFile, handleCompileProject, handleImportProject } from './utils/eventHandler'
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -31,8 +31,13 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  ipcMain.on('ping', () => console.log('pong'))
-  ipcMain.handle('importProject', handleChooseFile)
+  ipcMain.handle('selectFile', async (_, type) => await handleChooseFile(type))
+  ipcMain.handle('importProject', handleImportProject)
+  ipcMain.handle(
+    'compileProject',
+    async (_, projectName, conf, pres, style, env, assets) =>
+      await handleCompileProject(projectName, conf, pres, style, env, assets)
+  )
 
   createWindow()
 
