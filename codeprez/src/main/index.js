@@ -9,7 +9,7 @@ function createWindow() {
     width: 900,
     height: 670,
     show: false,
-    autoHideMenuBar: true,
+    // autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -32,7 +32,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   ipcMain.on('ping', () => console.log('pong'))
-  ipcMain.on('chooseFile', handleChooseFile)
+  ipcMain.handle('importProject', handleChooseFile)
 
   createWindow()
 

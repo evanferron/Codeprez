@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 const api = {
-  chooseFile: () => ipcRenderer.send('chooseFile'),
+  importProject: async () => await ipcRenderer.invoke('importProject'),
   ping: () => ipcRenderer.send('ping')
 }
 
