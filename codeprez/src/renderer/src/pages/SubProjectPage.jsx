@@ -4,7 +4,7 @@ import './SubProjectPage.css';
 
 export default function SubProjectPage() {
   const location = useLocation();
-  const { currentSlide, nextSlide, styleCss } = location.state || {};
+  const { currentSlide, nextSlide, styleCss, timer } = location.state || {};
 
   const [time, setTime] = useState(0);
 
@@ -51,6 +51,8 @@ export default function SubProjectPage() {
               <div contentEditable='true' dangerouslySetInnerHTML={{ __html: nextSlide }}></div>
             </div>
             <div className="timer">
+                <h2>Timer</h2>
+                <h3>Time limit : {timer} minutes</h3>
                 <div className="timer-container">
                   <p className="timer-time">
                     {hours}:{minutes.toString().padStart(2, "0")}:

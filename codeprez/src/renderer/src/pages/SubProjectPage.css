@@ -26,6 +26,18 @@ h1 {
   background: none;
 }
 
+h2 {
+  text-align: center;
+  color: #0f0f0f;
+  font-size: 1.2rem;
+}
+
+h3 {
+  text-align: center;
+  color: #0f0f0f;
+  font-size: 1rem;
+}
+
 .subproject-page {
   display: flex;
   flex: 1;
