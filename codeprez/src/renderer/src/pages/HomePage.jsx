@@ -43,6 +43,14 @@ export default function HomePage() {
       </section>
       <Link to="/project">project</Link>
       <Link to="/app">app</Link>
+      <Link to="/subproject"
+        state={{
+          currentSlide: `<h2 className="test">Ma slide courante</h2>`,
+          nextSlide: `<h2 className="test">Ma slide suivante</h2>`,
+          styleCss: `.test { color: red; }`
+        }}
+      >
+    subproject</Link>
     </main>
   )
 }
