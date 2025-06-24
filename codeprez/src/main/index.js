@@ -1,12 +1,10 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import path, { join } from 'path'
 import fs from 'fs'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { chooseFile, unzipFile } from '../utils/zip'
+import { handleChooseFile } from './utils/eventHandler'
 
 function createWindow() {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -15,7 +13,8 @@ function createWindow() {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: true,
+      contextIsolation: true
     }
   })
 
@@ -28,33 +27,12 @@ function createWindow() {
     return { action: 'deny' }
   })
 
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-  } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-  }
+  mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
 }
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.electron')
-
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
-  })
-
   ipcMain.on('ping', () => console.log('pong'))
-
-  ipcMain.on('dialog:openFile', async () => {
-    const file = await chooseFile()
-    if (file.canceled) {
-      console.log('File selection was canceled')
-    } else {
-      unzipFile(file.filePaths[0])
-      console.log('Selected file:', file.filePaths[0])
-    }
-  })
+  ipcMain.on('chooseFile', handleChooseFile)
 
   createWindow()
 
@@ -65,15 +43,18 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    fs.rm(pathTemp, { recursive: true, force: true }, (err) => {
-      if (err) {
-        console.error('Error removing temporary path:', err)
-      } else {
-        console.log('Temporary path removed successfully')
-      }
-    })
     app.quit()
   }
+})
+
+app.on('quit', () => {
+  fs.rmSync(pathTemp, { recursive: true, force: true }, (err) => {
+    if (err) {
+      console.error('Error removing temporary path on quit:', err)
+    } else {
+      console.log('Temporary path removed successfully on quit')
+    }
+  })
 })
 
 export const pathTemp = path.join(app.getPath('temp'), 'codeprez')

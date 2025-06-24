@@ -2,7 +2,7 @@ import AdmZip from 'adm-zip'
 import fs from 'fs'
 import path from 'path'
 import { dialog } from 'electron'
-import { pathTemp } from '../main'
+import { pathTemp } from '..'
 
 export const zipFile = () => {
   const zip = new AdmZip()
@@ -24,7 +24,6 @@ export const unzipFile = (pathCodeprez) => {
   const zip = new AdmZip(pathCodeprez)
 
   zip.extractAllTo(path.join(pathTemp, 'test'), true)
-  console.log('Files extracted successfully')
 }
 
 

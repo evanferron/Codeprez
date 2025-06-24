@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 export default function HomePage() {
-  const chooseFile = () => window.electron.ipcRenderer.send('dialog:openFile')
+  const chooseFile = () => window.api.chooseFile()
 
   return (
     <main>
