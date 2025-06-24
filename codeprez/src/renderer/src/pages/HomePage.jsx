@@ -45,12 +45,49 @@ export default function HomePage() {
       <Link to="/app">app</Link>
       <Link to="/subproject"
         state={{
-          currentSlide: `<h2 className="test">Ma slide courante</h2>`,
-          nextSlide: `<h2 className="test">Ma slide suivante</h2>`,
+          currentSlide: `<h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>`,
+          nextSlide: `<h2 class="test">Ma slide suivante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>
+          <h2 class="test">Ma slide courante</h2>`,
           styleCss: `.test { color: red; }`
-        }}
-      >
-    subproject</Link>
+        }} > 
+      subproject</Link>
     </main>
   )
 }

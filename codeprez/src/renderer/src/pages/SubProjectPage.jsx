@@ -1,5 +1,6 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react';
+import './SubProjectPage.css';
 
 export default function SubProjectPage() {
   const location = useLocation();
@@ -33,34 +34,39 @@ export default function SubProjectPage() {
   };
 
   return (
-    <main>
-      <h1>SubProject</h1>
+    <main >
       {styleCss && (
         <style>
           {styleCss}
         </style>
       )}
-      <div className="current-slide">
-         <div contentEditable='true' dangerouslySetInnerHTML={{ __html: currentSlide }}></div>
-      </div>
-      <div className="next-slide">
-         <div contentEditable='true' dangerouslySetInnerHTML={{ __html: nextSlide }}></div>
-      </div>
-      <div className="timer">
-          <div className="timer-container">
-            <p className="timer-time">
-              {hours}:{minutes.toString().padStart(2, "0")}:
-              {seconds.toString().padStart(2, "0")}
-            </p>
-            <div className="timer-buttons">
-              <button className="timer-button" onClick={startAndStop}>
-                {isRunning ? "Stop" : "Start"}
-              </button>
-              <button className="timer-button" onClick={reset}>
-                Reset
-              </button>
+      <div className="subproject-page">
+        <div className="left-section">
+            <div className="current-slide">
+              <div contentEditable='true' dangerouslySetInnerHTML={{ __html: currentSlide }}></div>
             </div>
-          </div>
+        </div>
+        <div className="right-section">
+            <div className="next-slide">
+              <div contentEditable='true' dangerouslySetInnerHTML={{ __html: nextSlide }}></div>
+            </div>
+            <div className="timer">
+                <div className="timer-container">
+                  <p className="timer-time">
+                    {hours}:{minutes.toString().padStart(2, "0")}:
+                    {seconds.toString().padStart(2, "0")}
+                  </p>
+                  <div className="timer-buttons">
+                    <button className="timer-button" onClick={startAndStop}>
+                      {isRunning ? "Stop" : "Start"}
+                    </button>
+                    <button className="timer-button" onClick={reset}>
+                      Reset
+                    </button>
+                  </div>
+                </div>
+            </div>
+        </div>
       </div>
     </main>
   )
