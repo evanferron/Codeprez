@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import path, { join } from 'path'
 import fs from 'fs'
 import icon from '../../resources/icon.png?asset'
-import { handleChooseFile } from './utils/eventHandler'
+import { handleChooseFile, handleCompileProject, handleImportProject } from './utils/eventHandler'
 import { getSlidesContent, readFirstSlideContent } from './utils/markdown.js'
 
 function createWindow() {
@@ -10,7 +10,7 @@ function createWindow() {
     width: 900,
     height: 670,
     show: false,
-    autoHideMenuBar: true,
+    // autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -33,8 +33,13 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  ipcMain.on('ping', () => console.log('pong'))
-  ipcMain.on('chooseFile', handleChooseFile)
+  ipcMain.handle('selectFile', async (_, type) => await handleChooseFile(type))
+  ipcMain.handle('importProject', handleImportProject)
+  ipcMain.handle(
+    'compileProject',
+    async (_, projectName, conf, pres, style, env, assets) =>
+      await handleCompileProject(projectName, conf, pres, style, env, assets)
+  )
 
   createWindow()
 

@@ -4,29 +4,61 @@ import path from 'path'
 import { dialog } from 'electron'
 import { pathTemp } from '..'
 
-export const zipFile = () => {
+export const zipFile = (projectName, config, pres, style, env) => {
   const zip = new AdmZip()
 
-  zip.addLocalFile(path.join(__dirname, 'data.json'))
-  zip.addLocalFile(path.join(__dirname, 'presentation.md'))
+  zip.addLocalFile(config)
+  zip.addLocalFile(pres)
+  zip.addLocalFile(style)
+  zip.addLocalFolder(env)
 
-  zip.writeZip(path.join(__dirname, 'test.zip'))
-  fs.rename(path.join(__dirname, 'test.zip'), path.join(__dirname, 'test.codeprez'), (err) => {
-    if (err) {
-      console.error('Error renaming file:', err)
-    } else {
-      console.log('File renamed successfully to test.codeprez')
+  zip.writeZip(path.join(__dirname, 'projectName.zip'))
+
+  fs.rename(
+    path.join(__dirname, `${projectName}.zip`),
+    path.join(__dirname, `${projectName}.codeprez`),
+    (err) => {
+      if (err) {
+        console.error('Error renaming file:', err)
+      } else {
+        console.log('File renamed successfully to projectName.codeprez')
+      }
     }
-  });
+  )
 }
 
 export const unzipFile = (pathCodeprez) => {
   const zip = new AdmZip(pathCodeprez)
 
-  zip.extractAllTo(path.join(pathTemp, 'test'), true)
+  const fileName = path.basename(pathCodeprez, '.codeprez')
+
+  zip.extractAllTo(path.join(pathTemp, fileName), true)
 }
 
+export const chooseFile = async (type) => {
+  if (type === 'folder') {
+    return await dialog.showOpenDialog({
+      properties: ['openDirectory'],
+      filters: [{ name: 'Folders', extensions: [''] }]
+    })
+  }
+  return await dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [{ name: type, extensions: [type] }]
+  })
+}
 
-export const chooseFile = async () => {
-  return await dialog.showOpenDialog({ properties: ['openFile'] })
+export const createProject = async (projectName, conf, pres, style, env, assets) => {
+  const projectPath = path.join(pathTemp, projectName)
+  fs.mkdirSync(projectPath, { recursive: true })
+  fs.copyFileSync(conf, path.join(projectPath, 'config.json'))
+  fs.copyFileSync(pres, path.join(projectPath, 'presentation.md'))
+  fs.copyFileSync(style, path.join(projectPath, 'style.css'))
+  fs.cpSync(env, path.join(projectPath, 'env'), { recursive: true })
+  fs.cpSync(assets, path.join(projectPath, 'assets'), { recursive: true })
+
+  return {
+    success: true,
+    projectPath
+  }
 }

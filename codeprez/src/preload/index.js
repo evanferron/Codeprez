@@ -1,8 +1,15 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 const api = {
-  chooseFile: () => ipcRenderer.send('chooseFile'),
-  ping: () => ipcRenderer.send('ping'),
+  selectFile: async (type) => {
+    return await ipcRenderer.invoke('selectFile', type)
+  },
+  compileProject: async (projectName, conf, pres, style, env, assets) => {
+    return await ipcRenderer.invoke('compileProject', projectName, conf, pres, style, env, assets)
+  },
+  importProject: async () => {
+    return await ipcRenderer.invoke('importProject')
+  },
   getSlidesContent: (filePath) => ipcRenderer.invoke('getSlidesContent', filePath),
   readFirstSlideContent: (filePath) => ipcRenderer.invoke('readFirstSlideContent', filePath),
 }
