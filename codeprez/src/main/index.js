@@ -3,6 +3,7 @@ import path, { join } from 'path'
 import fs from 'fs'
 import icon from '../../resources/icon.png?asset'
 import { handleChooseFile } from './utils/eventHandler'
+import { getSlidesContent, readFirstSlideContent } from './utils/markdown.js'
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -20,6 +21,7 @@ function createWindow() {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+    mainWindow.webContents.openDevTools({ mode: 'detach' })
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -55,6 +57,14 @@ app.on('quit', () => {
       console.log('Temporary path removed successfully on quit')
     }
   })
+})
+
+ipcMain.handle('getSlidesContent', async (event, filePath) => {
+  return await getSlidesContent(filePath)
+})
+
+ipcMain.handle('readFirstSlideContent', async (event, filePath) => {
+  return await readFirstSlideContent(filePath)
 })
 
 export const pathTemp = path.join(app.getPath('temp'), 'codeprez')
