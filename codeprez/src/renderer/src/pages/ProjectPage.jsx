@@ -22,6 +22,7 @@ export default function ProjectPage() {
       setSlides(slides)
 
       setIsLoading(false)
+      await window.api.openSubProjectPage(slides[0], slides[1], firstSlide.styleCss, firstSlide.duration)
     }
 
     fetchSlides()
@@ -32,12 +33,15 @@ export default function ProjectPage() {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') {
         setCurrentSlide((prev) => (slides && prev < slides.length - 1 ? prev + 1 : prev))
+
       }
       if (e.key === 'ArrowLeft') {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev))
+
       }
       if (e.key === 'Escape') {
         navigate('/')
+
       }
     }
     window.addEventListener('keydown', handleKeyDown)

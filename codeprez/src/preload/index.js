@@ -10,6 +10,12 @@ const api = {
   importProject: async () => {
     return await ipcRenderer.invoke('importProject')
   },
+
+  openSubProjectPage: async (currentSlide, nextSlide, styleCss, timer) => {
+    console.log('Opening sub project page with:', currentSlide, nextSlide, styleCss, timer)
+    await ipcRenderer.invoke('openSubProjectPage', currentSlide, nextSlide, styleCss, timer)
+  },
+
   getSlidesContent: () => ipcRenderer.invoke('getSlidesContent'),
   readFirstSlideContent: () => ipcRenderer.invoke('readFirstSlideContent'),
   runCommand: (command) => ipcRenderer.invoke('runCommand', command),
@@ -25,3 +31,11 @@ if (process.contextIsolated) {
 } else {
   window.api = api
 }
+
+contextBridge.exposeInMainWorld("subPresentation",{
+    getProps : (callback) => {
+        ipcRenderer.on("get-props", (e, data) => {
+            callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
+        });
+    } 
+});

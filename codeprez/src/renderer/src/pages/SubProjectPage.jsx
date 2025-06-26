@@ -31,7 +31,7 @@ export default function SubProjectPage() {
     setTime(0);
   };
 
-  window.api.getProps((currentSlide, nextSlide, styleCss, timer) => {
+  window.subPresentation.getProps((currentSlide, nextSlide, styleCss, timer) => {
    setCurrentSlide(currentSlide);
    setNextSlide(nextSlide); 
    setStyleCss(styleCss);

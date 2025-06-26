@@ -32,6 +32,38 @@ function createWindow() {
   mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
 }
 
+
+function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
+  const subWindow = new BrowserWindow({
+    width: 900,
+    height: 670,
+    show: false,
+    ...(process.platform === 'linux' ? { icon } : {}),
+    webPreferences: {
+       preload: join(__dirname, '../preload/index.js'),
+      sandbox: true,
+      contextIsolation: true
+    }
+  });
+
+  subWindow.loadFile(join(__dirname, '../renderer/index.html'), {hash: 'subproject'});
+
+  subWindow.once('ready-to-show', () => {
+    subWindow.show();
+  });
+
+  subWindow.webContents.on('did-finish-load', () => {
+    subWindow.webContents.send('get-props', {
+      currentSlide : currentSlide,
+      nextSlide : nextSlide,
+      styleCss : styleCss,
+      timer : timer
+    });
+  });
+}
+
+
+
 app.whenReady().then(() => {
   ipcMain.handle('selectFile', async (_, type) => await handleChooseFile(type))
   ipcMain.handle('importProject', handleImportProject)
@@ -86,6 +118,10 @@ ipcMain.handle('runCommand', async (_, command) => {
       }
     })
   })
+})
+
+ipcMain.handle('openSubProjectPage', async (_, currentSlide, nextSlide, styleCss, timer) => {
+  createSubWindow(currentSlide, nextSlide, styleCss, timer)
 })
 
 export const pathTemp = path.join(app.getPath('temp'), 'codeprez')
