@@ -64,17 +64,17 @@ app.on('quit', () => {
   })
 })
 
-ipcMain.handle('getSlidesContent', async (event) => {
+ipcMain.handle('getSlidesContent', async () => {
   const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
   return await getSlidesContent(filePath)
 })
 
-ipcMain.handle('readFirstSlideContent', async (event) => {
+ipcMain.handle('readFirstSlideContent', async () => {
   const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
   return await readFirstSlideContent(filePath)
 })
 
-ipcMain.handle('runCommand', async (event, command) => {
+ipcMain.handle('runCommand', async (_, command) => {
   // Force le cwd sur le dossier temporaire de la présentation
   const tempDir = path.join(app.getPath('temp'), 'codeprez', 'example-presentation', 'assets')
   return new Promise((resolve) => {
