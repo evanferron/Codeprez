@@ -1,13 +1,13 @@
-import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 import './SubProjectPage.css';
 
 export default function SubProjectPage() {
-  const location = useLocation();
-  const { currentSlide, nextSlide, styleCss, timer } = location.state || {};
+  const [currentSlide, setCurrentSlide] = useState("");
+  const [nextSlide, setNextSlide] = useState("");
+  const [styleCss, setStyleCss] = useState("");
+  const [timer, setTimer] = useState("");
 
   const [time, setTime] = useState(0);
-
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
@@ -19,9 +19,7 @@ export default function SubProjectPage() {
   }, [isRunning, time]);
 
   const hours = Math.floor(time / 360000);
-
   const minutes = Math.floor((time % 360000) / 6000);
-
   const seconds = Math.floor((time % 6000) / 100);
 
   const startAndStop = () => {
@@ -32,6 +30,13 @@ export default function SubProjectPage() {
   const reset = () => {
     setTime(0);
   };
+
+  window.api.getProps((currentSlide, nextSlide, styleCss, timer) => {
+   setCurrentSlide(currentSlide);
+   setNextSlide(nextSlide); 
+   setStyleCss(styleCss);
+   setTimer(timer);
+  })
 
   return (
     <main >
