@@ -9,7 +9,11 @@ const api = {
   },
   importProject: async () => {
     return await ipcRenderer.invoke('importProject')
-  }
+  },
+  getSlidesContent: () => ipcRenderer.invoke('getSlidesContent'),
+  readFirstSlideContent: () => ipcRenderer.invoke('readFirstSlideContent'),
+  runCommand: (command) => ipcRenderer.invoke('runCommand', command),
+  versions: process.versions
 }
 
 if (process.contextIsolated) {
