@@ -4,6 +4,7 @@ import fs from 'fs'
 import icon from '../../resources/icon.png?asset'
 import { handleChooseFile, handleCompileProject, handleImportProject } from './utils/eventHandler'
 import { getSlidesContent, readFirstSlideContent } from './utils/markdown.js'
+import { exec } from 'child_process'
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -64,12 +65,28 @@ app.on('quit', () => {
   })
 })
 
-ipcMain.handle('getSlidesContent', async (event, filePath) => {
+ipcMain.handle('getSlidesContent', async (event) => {
+  const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
   return await getSlidesContent(filePath)
 })
 
-ipcMain.handle('readFirstSlideContent', async (event, filePath) => {
+ipcMain.handle('readFirstSlideContent', async (event) => {
+  const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
   return await readFirstSlideContent(filePath)
+})
+
+ipcMain.handle('runCommand', async (event, command) => {
+  // Force le cwd sur le dossier temporaire de la présentation
+  const tempDir = path.join(app.getPath('temp'), 'codeprez', 'example-presentation', 'assets')
+  return new Promise((resolve) => {
+    exec(command, { cwd: tempDir }, (error, stdout, stderr) => {
+      if (error) {
+        resolve(stderr || error.message)
+      } else {
+        resolve(stdout)
+      }
+    })
+  })
 })
 
 export const pathTemp = path.join(app.getPath('temp'), 'codeprez')

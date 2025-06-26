@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './ProjectPage.css'
+import 'highlight.js/styles/github.css'
 
 export default function ProjectPage() {
   const [firstSlide, setFirstSlide] = useState({ title: '', members: [] })
@@ -7,23 +8,16 @@ export default function ProjectPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
+  // Charge les slides et le premier slide au chargement du composant
   useEffect(() => {
     const fetchSlides = async () => {
       setIsLoading(true)
 
-      // const firstSlide = await window.api.readFirstSlideContent()
-      setFirstSlide({
-        title: 'Bienvenue dans CodePrez',
-        members: ['Jean', 'Pierre', 'Jacques']
-      })
+      const firstSlide = await window.api.readFirstSlideContent()
+      setFirstSlide(firstSlide)
 
-      // const slides = await window.api.getSlidesContent()
-      setSlides([
-        "<h1>Slide 1</h1><p>Ceci est le contenu de la première diapositive.</p>",
-        "<h1>Slide 2</h1><p>Ceci est le contenu de la deuxième diapositive.</p>",
-        "<h1>Slide 3</h1><p>Ceci est le contenu de la troisième diapositive.</p>",
-        "<h1>Slide 4</h1><p>Ceci est le contenu de la quatrième diapositive.</p>"
-      ])
+      const slides = await window.api.getSlidesContent()
+      setSlides(slides)
 
       setIsLoading(false)
     }
@@ -31,6 +25,7 @@ export default function ProjectPage() {
     fetchSlides()
   }, [])
 
+  // Gère le changement de slide avec les flèches gauche/droite
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') {
@@ -43,6 +38,23 @@ export default function ProjectPage() {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [slides])
+
+  // Ajoute les listeners aux boutons de commande après chaque rendu de slide
+  useEffect(() => {
+    // Sélectionne tous les boutons après chaque rendu de slide
+    const buttons = document.querySelectorAll('.run-command')
+    buttons.forEach((btn) => {
+      // Pour éviter d'ajouter plusieurs fois le même listener
+      if (!btn.dataset.listener) {
+        btn.addEventListener('click', async () => {
+          const command = btn.getAttribute('data-command')
+          const result = await window.api.runCommand(command)
+          btn.parentElement.querySelector('.command-result').textContent = result
+        })
+        btn.dataset.listener = 'true'
+      }
+    })
+  }, [slides, currentSlide])
 
   if (isLoading) {
     return (
@@ -60,17 +72,15 @@ export default function ProjectPage() {
         <section className="first-slide">
           <h1 className="project-title">{firstSlide.title}</h1>
           <div className="members">
-            {firstSlide.members.map((member, index) => (
+            {firstSlide.authors.map((author, index) => (
               <span key={index} className="member">
-                {member}
+                {author}
               </span>
             ))}
           </div>
         </section>
       ) : (
-        <section
-          dangerouslySetInnerHTML={{ __html: slides[currentSlide] }}
-        ></section>
+        <section dangerouslySetInnerHTML={{ __html: slides[currentSlide - 1] }}></section>
       )}
     </main>
   )
