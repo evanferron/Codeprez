@@ -19,6 +19,10 @@ const api = {
     await ipcRenderer.invoke('changeSlideSubPresentation', currentSlide, nextSlide, styleCss, timer)
   },
 
+  closeSubPresentation: async () => {
+    await ipcRenderer.invoke('closeSubPresentation')
+  },
+
   getSlidesContent: () => ipcRenderer.invoke('getSlidesContent'),
   readFirstSlideContent: () => ipcRenderer.invoke('readFirstSlideContent'),
   runCommand: (command) => ipcRenderer.invoke('runCommand', command),

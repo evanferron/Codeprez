@@ -38,8 +38,8 @@ export default function ProjectPage() {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev))
        }
       if (e.key === 'Escape') {
+        window.api.closeSubPresentation()
         navigate('/')
-
       }
     }
     window.addEventListener('keydown', handleKeyDown)

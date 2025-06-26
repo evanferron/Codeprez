@@ -141,4 +141,11 @@ ipcMain.handle('changeSlideSubPresentation', async (_, currentSlide, nextSlide, 
   }
 });
 
+ipcMain.handle('closeSubPresentation', async () => {
+  if (subWindow && !subWindow.isDestroyed()) {
+    subWindow.close()
+    subWindow = null
+  }
+})
+
 export const pathTemp = path.join(app.getPath('temp'), 'codeprez')
