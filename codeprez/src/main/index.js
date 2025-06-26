@@ -32,9 +32,9 @@ function createWindow() {
   mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
 }
 
-
+let subWindow = null
 function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
-  const subWindow = new BrowserWindow({
+  subWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
@@ -120,8 +120,25 @@ ipcMain.handle('runCommand', async (_, command) => {
   })
 })
 
-ipcMain.handle('openSubProjectPage', async (_, currentSlide, nextSlide, styleCss, timer) => {
+ipcMain.handle('openSubPresentationPage', async (_, currentSlide, nextSlide, styleCss, timer) => {
   createSubWindow(currentSlide, nextSlide, styleCss, timer)
 })
+
+ipcMain.handle('changeSlideSubPresentation', async (_, currentSlide, nextSlide, styleCss, timer) => {
+  if (subWindow && !subWindow.isDestroyed()) {
+    console.log("Change slide event received:", {
+      currentSlide,
+      nextSlide,
+      styleCss,
+      timer
+    });
+    subWindow.webContents.send('change-slide', {
+      currentSlide : currentSlide,
+      nextSlide : nextSlide,
+      styleCss : styleCss,
+      timer : timer 
+    });
+  }
+});
 
 export const pathTemp = path.join(app.getPath('temp'), 'codeprez')

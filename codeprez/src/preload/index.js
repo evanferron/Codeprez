@@ -11,9 +11,12 @@ const api = {
     return await ipcRenderer.invoke('importProject')
   },
 
-  openSubProjectPage: async (currentSlide, nextSlide, styleCss, timer) => {
-    console.log('Opening sub project page with:', currentSlide, nextSlide, styleCss, timer)
-    await ipcRenderer.invoke('openSubProjectPage', currentSlide, nextSlide, styleCss, timer)
+  openSubPresentationPage: async (currentSlide, nextSlide, styleCss, timer) => {
+    await ipcRenderer.invoke('openSubPresentationPage', currentSlide, nextSlide, styleCss, timer)
+  },
+
+  changeSlideSubPresentation: async (currentSlide, nextSlide, styleCss, timer) => {
+    await ipcRenderer.invoke('changeSlideSubPresentation', currentSlide, nextSlide, styleCss, timer)
   },
 
   getSlidesContent: () => ipcRenderer.invoke('getSlidesContent'),
@@ -37,5 +40,13 @@ contextBridge.exposeInMainWorld("subPresentation",{
         ipcRenderer.on("get-props", (e, data) => {
             callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
         });
+    },
+
+    changeSlide : (callback) => {
+        ipcRenderer.on("change-slide", (e, data) => {
+          console.log("Change slide event received:", data);
+            callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
+        });
     } 
 });
+
