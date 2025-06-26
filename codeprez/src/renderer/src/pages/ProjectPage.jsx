@@ -6,8 +6,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 export default function ProjectPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const projectName = location.state?.projectName
-  console.log('Project name:', projectName)
+  const projectPath = location.state?.projectName
+  console.log('Project name:', projectPath)
   const [firstSlide, setFirstSlide] = useState({ title: '', members: [] })
   const [slides, setSlides] = useState(null)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -19,13 +19,13 @@ export default function ProjectPage() {
     const fetchSlides = async () => {
       setIsLoading(true)
 
-      const firstSlide = await window.api.readFirstSlideContent()
+      const firstSlide = await window.api.readFirstSlideContent(projectPath)
       setFirstSlide(firstSlide)
 
-      const slides = await window.api.getSlidesContent()
+      const slides = await window.api.getSlidesContent(projectPath)
       setSlides(slides)
 
-      setCss(await window.api.getCss(projectName + '/style.css'))
+      setCss(await window.api.getCss(projectPath + '/style.css'))
 
       console.log('CSS loaded:', css)
 
@@ -34,7 +34,7 @@ export default function ProjectPage() {
     }
 
     fetchSlides()
-  }, [projectName, css])
+  }, [projectPath, css])
 
   // Gère le changement de slide avec les flèches gauche/droite et la touche Escape
   useEffect(() => {
@@ -62,13 +62,13 @@ export default function ProjectPage() {
       if (!btn.dataset.listener) {
         btn.addEventListener('click', async () => {
           const command = btn.getAttribute('data-command')
-          const result = await window.api.runCommand(command)
+          const result = await window.api.runCommand(command, projectPath)
           btn.parentElement.querySelector('.command-result').textContent = result
         })
         btn.dataset.listener = 'true'
       }
     })
-  }, [slides, currentSlide])
+  }, [slides, currentSlide, projectPath])
 
   if (isLoading) {
     return (

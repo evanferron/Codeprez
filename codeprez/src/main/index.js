@@ -6,9 +6,6 @@ import { handleChooseFile, handleCompileProject, handleImportProject } from './u
 import { getSlidesContent, readFileContent, readFirstSlideContent } from './utils/markdown.js'
 import { exec } from 'child_process'
 
-export let pathTemp
-
-
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -36,8 +33,6 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  pathTemp = path.join(app.getPath('temp'), 'codeprez')
-  console.log('Temporary path:', pathTemp)
   ipcMain.handle('selectFile', async (_, type) => await handleChooseFile(type))
   ipcMain.handle('importProject', handleImportProject)
   ipcMain.handle(
@@ -50,19 +45,18 @@ app.whenReady().then(() => {
     return await readFileContent(path)
   })
 
-  ipcMain.handle('getSlidesContent', async () => {
-    const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
-    return await getSlidesContent(filePath)
+  ipcMain.handle('getSlidesContent', async (_, path) => {
+    return await getSlidesContent(path)
   })
 
-  ipcMain.handle('readFirstSlideContent', async () => {
-    const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
-    return await readFirstSlideContent(filePath)
+  ipcMain.handle('readFirstSlideContent', async (_, path) => {
+    return await readFirstSlideContent(path)
   })
 
-  ipcMain.handle('runCommand', async (_, command) => {
+  ipcMain.handle('runCommand', async (_, command, filePath) => {
+    console.log('Running command:', command, 'in path:', filePath)
     // Force le cwd sur le dossier temporaire de la présentation
-    const tempDir = path.join(pathTemp, 'example-presentation', 'assets')
+    const tempDir = path.join(filePath, 'assets')
     return new Promise((resolve) => {
       exec(command, { cwd: tempDir }, (error, stdout, stderr) => {
         if (error) {
@@ -88,7 +82,7 @@ app.on('window-all-closed', () => {
 })
 
 app.on('quit', () => {
-  fs.rmSync(pathTemp, { recursive: true, force: true }, (err) => {
+  fs.rmSync(getTempPath(), { recursive: true, force: true }, (err) => {
     if (err) {
       console.error('Error removing temporary path on quit:', err)
     } else {
@@ -96,3 +90,7 @@ app.on('quit', () => {
     }
   })
 })
+
+export const getTempPath = () => {
+  return path.join(app.getPath('temp'), 'codeprez')
+}
