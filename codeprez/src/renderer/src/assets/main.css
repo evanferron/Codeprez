@@ -1,6 +1,10 @@
 @import './base.css';
 
 body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,6 +12,16 @@ body {
   background-image: url('./wavy-lines.svg');
   background-size: cover;
   user-select: none;
+}
+
+main {
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 code {
@@ -28,9 +42,8 @@ code {
 
 #root {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+  flex: 1;
   margin-bottom: 80px;
 }
 

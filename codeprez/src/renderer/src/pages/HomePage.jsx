@@ -1,5 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import '../styles/home.css'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -7,38 +8,27 @@ export default function HomePage() {
   const [projectName, setProjectName] = useState('')
   const [conf, setConf] = useState('')
   const [pres, setPres] = useState('')
-  const [style, setStyle] = useState('')
+  const [styleFile, setStyleFile] = useState('')
   const [env, setEnv] = useState('')
   const [assets, setAssets] = useState('')
 
   const [error, setError] = useState(null)
 
   const handleImport = async () => {
-    await window.api.importProject()
-    navigate('/project')
+    const result = await window.api.importProject()
+    console.log('Import result:', result)
+    if (result.status === 'cancelled') {
+      return
+    }
+    if (result.status === 'error') {
+      setError(result.error)
+      return
+    }
+    navigate('/project', { projectName: result.projectPath })
   }
 
   const selectFile = async (type, setter) => {
     const response = await window.api.selectFile(type)
-    manageResponse(response, setter)
-  }
-
-  const compileProject = async () => {
-    if (!projectName || !conf || !pres || !style || !env || !assets) {
-      setError('All fields must be filled.')
-      return
-    }
-    const result = await window.api.compileProject(projectName, conf, pres, style, env, assets)
-    if (result.success) {
-      alert('Project compiled successfully!')
-      navigate('/project')
-    } else {
-      alert('Error compiling project: ' + result.error)
-    }
-  }
-
-  const manageResponse = (response, setter) => {
-    console.log('Response:', response.status)
     switch (response.status) {
       case 'cancelled':
         return
@@ -54,44 +44,72 @@ export default function HomePage() {
     }
   }
 
+  const compileProject = async () => {
+    if (!projectName || !conf || !pres || !styleFile || !env || !assets) {
+      setError('All fields must be filled.')
+      return
+    }
+    const result = await window.api.compileProject(projectName, conf, pres, styleFile, env, assets)
+    if (result.success) {
+      alert('Project compiled successfully!')
+      console.log('Project compiled successfully:', result.projectPath)
+      navigate('/project', { projectName: result.projectPath })
+    } else {
+      alert('Error compiling project: ' + result.error)
+    }
+  }
+
   return (
     <main>
-      <h1>HOME</h1>
       <section className="home-section" id="create-project">
+        <h2>Create New Project</h2>
         <input
           type="text"
-          placeholder="Project name"
+          placeholder="Enter your project name..."
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
         />
-        <span>
-          <button onClick={() => selectFile('json', setConf)}>Select your conf.json</button>
-          <p>{conf}</p>
-        </span>
-        <span>
-          <button onClick={() => selectFile('md', setPres)}>Select your pres.md</button>
-          <p>{pres}</p>
-        </span>
-        <span>
-          <button onClick={() => selectFile('css', setStyle)}>Select your style.css</button>
-          <p>{style}</p>
-        </span>
-        <span>
-          <button onClick={() => selectFile('folder', setEnv)}>Select your env folder</button>
-          <p>{env}</p>
-        </span>
-        <span>
-          <button onClick={() => selectFile('folder', setAssets)}>Select your assets folder</button>
-          <p>{assets}</p>
-        </span>
-        <button onClick={compileProject}>Compile project</button>
+        <div className="file-input-group">
+          <div className="file-input-row">
+            <button onClick={() => selectFile('json', setConf)}>Select conf.json</button>
+            <p>{conf || 'No file selected'}</p>
+          </div>
+          <div className="file-input-row">
+            <button onClick={() => selectFile('md', setPres)}>Select pres.md</button>
+            <p>{pres || 'No file selected'}</p>
+          </div>
+          <div className="file-input-row">
+            <button onClick={() => selectFile('css', setStyleFile)}>Select style.css</button>
+            <p>{styleFile || 'No file selected'}</p>
+          </div>
+          <div className="file-input-row">
+            <button onClick={() => selectFile('folder', setEnv)}>Select env folder</button>
+            <p>{env || 'No folder selected'}</p>
+          </div>
+          <div className="file-input-row">
+            <button onClick={() => selectFile('folder', setAssets)}>Select assets folder</button>
+            <p>{assets || 'No folder selected'}</p>
+          </div>
+        </div>
+        <button className="compile-button" onClick={compileProject}>
+          Compile Project
+        </button>
+        {error && <div className="error-message">{error}</div>}
       </section>
       <section className="home-section" id="import-project">
-        <button onClick={handleImport}>import project</button>
+        <h2>Import Existing Project</h2>
+        <button onClick={handleImport}>Import Project</button>
       </section>
-      {error && <p>{error}</p>}
       <Link to="/project">project</Link>
       <Link to="/app">app</Link>
+      {/* <Link to="/subproject"
+        state={{
+          currentSlide: `<h2 class="test">Ma slide courante</h2>`,
+          nextSlide: `<h2 class="test">Ma slide suivante</h2>`,
+          styleCss: `.test { color: red; }`,
+          timer: 5
+        }} > 
+      subproject</Link> */}
     </main>
   )
 }

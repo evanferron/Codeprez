@@ -1,4 +1,4 @@
-import { chooseFile, createProject, unzipFile } from './zip.js'
+import { chooseFile, createProject, unzipFile, zipFile } from './zip.js'
 
 export const handleChooseFile = async (type) => {
   const file = await chooseFile(type)
@@ -27,29 +27,35 @@ export const handleImportProject = async () => {
       status: 'cancelled'
     }
   } else {
-    unzipFile(file.filePaths[0])
+    const destination = unzipFile(file.filePaths[0])
     return {
-      status: 'success'
+      status: 'success',
+      projectPath: destination
     }
   }
 }
 
 export const handleCompileProject = async (projectName, conf, pres, style, env, assets) => {
-  console.log('Compiling project with the following details:')
-  console.log('Project Name:', projectName)
-  console.log('Config File:', conf)
-  console.log('Presentation File:', pres)
-  console.log('Style File:', style)
-  console.log('Environment Folder:', env)
-  console.log('Assets Folder:', assets)
   if (!conf || !pres || !style || !env || !projectName || !assets) {
     return {
       success: false,
       error: 'All fields must be filled.'
     }
   }
-  createProject(projectName, conf, pres, style, env, assets)
+  const creationResult = await createProject(projectName, conf, pres, style, env, assets)
+  const path = await chooseFile('folder')
+  if (path.canceled) {
+    return {
+      success: false,
+      error: 'Project compilation cancelled.'
+    }
+  }
+  console.log('Project creation result:', creationResult)
+  console.log('Selected path for project:', path)
+  zipFile(projectName, conf, pres, style, env, assets, path.filePaths[0])
+
   return {
-    success: true
+    success: true,
+    projectPath: creationResult.projectPath
   }
 }

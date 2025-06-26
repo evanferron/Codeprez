@@ -4,19 +4,20 @@ import path from 'path'
 import { dialog } from 'electron'
 import { pathTemp } from '..'
 
-export const zipFile = (projectName, config, pres, style, env) => {
+export const zipFile = (projectName, config, pres, style, env, assets, destination) => {
   const zip = new AdmZip()
 
   zip.addLocalFile(config)
   zip.addLocalFile(pres)
   zip.addLocalFile(style)
   zip.addLocalFolder(env)
+  zip.addLocalFolder(assets)
 
-  zip.writeZip(path.join(__dirname, 'projectName.zip'))
+  zip.writeZip(path.join(destination, `${projectName}.zip`))
 
   fs.rename(
-    path.join(__dirname, `${projectName}.zip`),
-    path.join(__dirname, `${projectName}.codeprez`),
+    path.join(destination, `${projectName}.zip`),
+    path.join(destination, `${projectName}.codeprez`),
     (err) => {
       if (err) {
         console.error('Error renaming file:', err)
@@ -33,6 +34,8 @@ export const unzipFile = (pathCodeprez) => {
   const fileName = path.basename(pathCodeprez, '.codeprez')
 
   zip.extractAllTo(path.join(pathTemp, fileName), true)
+
+  return path.join(pathTemp, fileName)
 }
 
 export const chooseFile = async (type) => {

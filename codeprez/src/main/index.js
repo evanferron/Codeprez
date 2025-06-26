@@ -21,8 +21,7 @@ function createWindow() {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
-    mainWindow.webContents.openDevTools({ mode: 'detach' })
+    mainWindow.maximize()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
