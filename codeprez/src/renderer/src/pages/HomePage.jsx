@@ -29,7 +29,19 @@ export default function HomePage() {
 
   const selectFile = async (type, setter) => {
     const response = await window.api.selectFile(type)
-    manageResponse(response, setter)
+    switch (response.status) {
+      case 'cancelled':
+        return
+      case 'error':
+        setError(response.error)
+        break
+      case 'success':
+        setError(null)
+        setter(response.filePath)
+        break
+      default:
+        console.error('Unknown response status:', response.status)
+    }
   }
 
   const compileProject = async () => {
@@ -44,22 +56,6 @@ export default function HomePage() {
       navigate('/project', { projectName: result.projectPath })
     } else {
       alert('Error compiling project: ' + result.error)
-    }
-  }
-
-  const manageResponse = (response, setter) => {
-    switch (response.status) {
-      case 'cancelled':
-        return
-      case 'error':
-        setError(response.error)
-        break
-      case 'success':
-        setError(null)
-        setter(response.filePath)
-        break
-      default:
-        console.error('Unknown response status:', response.status)
     }
   }
 
