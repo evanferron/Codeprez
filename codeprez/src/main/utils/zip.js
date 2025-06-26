@@ -2,7 +2,7 @@ import AdmZip from 'adm-zip'
 import fs from 'fs'
 import path from 'path'
 import { dialog } from 'electron'
-import { pathTemp } from '..'
+import { getTempPath } from '..'
 
 export const zipFile = (projectName, config, pres, style, env, assets, destination) => {
   const zip = new AdmZip()
@@ -33,9 +33,9 @@ export const unzipFile = (pathCodeprez) => {
 
   const fileName = path.basename(pathCodeprez, '.codeprez')
 
-  zip.extractAllTo(path.join(pathTemp, fileName), true)
+  zip.extractAllTo(path.join(getTempPath(), fileName), true)
 
-  return path.join(pathTemp, fileName)
+  return path.join(getTempPath(), fileName)
 }
 
 export const chooseFile = async (type) => {
@@ -52,7 +52,7 @@ export const chooseFile = async (type) => {
 }
 
 export const createProject = async (projectName, conf, pres, style, env, assets) => {
-  const projectPath = path.join(pathTemp, projectName)
+  const projectPath = path.join(getTempPath(), projectName)
   fs.mkdirSync(projectPath, { recursive: true })
   fs.copyFileSync(conf, path.join(projectPath, 'config.json'))
   fs.copyFileSync(pres, path.join(projectPath, 'presentation.md'))

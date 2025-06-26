@@ -3,7 +3,7 @@ import path, { join } from 'path'
 import fs from 'fs'
 import icon from '../../resources/icon.png?asset'
 import { handleChooseFile, handleCompileProject, handleImportProject } from './utils/eventHandler'
-import { getSlidesContent, readFirstSlideContent } from './utils/markdown.js'
+import { getSlidesContent, readFileContent, readFirstSlideContent } from './utils/markdown.js'
 import { exec } from 'child_process'
 
 function createWindow() {
@@ -73,6 +73,33 @@ app.whenReady().then(() => {
       await handleCompileProject(projectName, conf, pres, style, env, assets)
   )
 
+  ipcMain.handle('getCss', async (_, path) => {
+    return await readFileContent(path)
+  })
+
+  ipcMain.handle('getSlidesContent', async (_, path) => {
+    return await getSlidesContent(path)
+  })
+
+  ipcMain.handle('readFirstSlideContent', async (_, path) => {
+    return await readFirstSlideContent(path)
+  })
+
+  ipcMain.handle('runCommand', async (_, command, filePath) => {
+    console.log('Running command:', command, 'in path:', filePath)
+    // Force le cwd sur le dossier temporaire de la présentation
+    const tempDir = path.join(filePath, 'assets')
+    return new Promise((resolve) => {
+      exec(command, { cwd: tempDir }, (error, stdout, stderr) => {
+        if (error) {
+          resolve(stderr || error.message)
+        } else {
+          resolve(stdout)
+        }
+      })
+    })
+  })
+
   createWindow()
 
   app.on('activate', function () {
@@ -87,7 +114,7 @@ app.on('window-all-closed', () => {
 })
 
 app.on('quit', () => {
-  fs.rmSync(pathTemp, { recursive: true, force: true }, (err) => {
+  fs.rmSync(getTempPath(), { recursive: true, force: true }, (err) => {
     if (err) {
       console.error('Error removing temporary path on quit:', err)
     } else {
@@ -96,6 +123,9 @@ app.on('quit', () => {
   })
 })
 
+export const getTempPath = () => {
+  return path.join(app.getPath('temp'), 'codeprez')
+}
 ipcMain.handle('getSlidesContent', async () => {
   const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
   return await getSlidesContent(filePath)

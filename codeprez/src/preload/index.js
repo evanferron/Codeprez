@@ -1,15 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 const api = {
-  selectFile: async (type) => {
-    return await ipcRenderer.invoke('selectFile', type)
-  },
-  compileProject: async (projectName, conf, pres, style, env, assets) => {
-    return await ipcRenderer.invoke('compileProject', projectName, conf, pres, style, env, assets)
-  },
-  importProject: async () => {
-    return await ipcRenderer.invoke('importProject')
-  },
+  selectFile: async (type) => await ipcRenderer.invoke('selectFile', type),
+  compileProject: async (projectName, conf, pres, style, env, assets) =>
+    await ipcRenderer.invoke('compileProject', projectName, conf, pres, style, env, assets),
+  importProject: async () => await ipcRenderer.invoke('importProject'),
 
   openSubPresentationPage: async (currentSlide, nextSlide, styleCss, timer) => {
     await ipcRenderer.invoke('openSubPresentationPage', currentSlide, nextSlide, styleCss, timer)
@@ -23,9 +18,10 @@ const api = {
     await ipcRenderer.invoke('closeSubPresentation')
   },
 
-  getSlidesContent: () => ipcRenderer.invoke('getSlidesContent'),
-  readFirstSlideContent: () => ipcRenderer.invoke('readFirstSlideContent'),
-  runCommand: (command) => ipcRenderer.invoke('runCommand', command),
+  getSlidesContent: async (path) => await ipcRenderer.invoke('getSlidesContent', path),
+  readFirstSlideContent: async (path) => await ipcRenderer.invoke('readFirstSlideContent', path),
+  runCommand: async (command, path) => await ipcRenderer.invoke('runCommand', command, path),
+  getCss: async (path) => await ipcRenderer.invoke('getCss', path),
   versions: process.versions
 }
 

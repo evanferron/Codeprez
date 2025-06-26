@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import '../styles/home.css'
-import { Link } from 'react-router-dom'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -25,7 +24,7 @@ export default function HomePage() {
       setError(result.error)
       return
     }
-    navigate('/project', { projectName: result.projectPath })
+    navigate('/project', { state: { projectName: result.projectPath } })
   }
 
   const selectFile = async (type, setter) => {
@@ -54,14 +53,14 @@ export default function HomePage() {
     if (result.success) {
       alert('Project compiled successfully!')
       console.log('Project compiled successfully:', result.projectPath)
-      navigate('/project', { projectName: result.projectPath })
+      navigate('/project', { state: { projectName: result.projectPath } })
     } else {
       alert('Error compiling project: ' + result.error)
     }
   }
 
   return (
-    <main>
+    <main className="home-main">
       <section className="home-section" id="create-project">
         <h2>Create New Project</h2>
         <input
@@ -101,16 +100,6 @@ export default function HomePage() {
         <h2>Import Existing Project</h2>
         <button onClick={handleImport}>Import Project</button>
       </section>
-      <Link to="/project">project</Link>
-      <Link to="/app">app</Link>
-      {/* <Link to="/subproject"
-        state={{
-          currentSlide: `<h2 class="test">Ma slide courante</h2>`,
-          nextSlide: `<h2 class="test">Ma slide suivante</h2>`,
-          styleCss: `.test { color: red; }`,
-          timer: 5
-        }} > 
-      subproject</Link> */}
     </main>
   )
 }
