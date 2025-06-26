@@ -100,6 +100,16 @@ export default function HomePage() {
         <h2>Import Existing Project</h2>
         <button onClick={handleImport}>Import Project</button>
       </section>
+      <Link to="/project">project</Link>
+      <Link to="/app">app</Link>
+      {/* <Link to="/subproject"
+        state={{
+          currentSlide: `<h2 class="test">Ma slide courante</h2>`,
+          nextSlide: `<h2 class="test">Ma slide suivante</h2>`,
+          styleCss: `.test { color: red; }`,
+          timer: 5
+        }} > 
+      subproject</Link> */}
     </main>
   )
 }
