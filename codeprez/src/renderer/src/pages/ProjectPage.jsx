@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
 import './ProjectPage.css'
 import 'highlight.js/styles/github.css'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 export default function ProjectPage() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const projectName = location.state?.projectName
+  console.log('Project name:', projectName)
   const [firstSlide, setFirstSlide] = useState({ title: '', members: [] })
   const [slides, setSlides] = useState(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
-  const navigate = useNavigate()
+  const [css, setCss] = useState('')
 
   // Charge les slides et le premier slide au chargement du composant
   useEffect(() => {
@@ -21,11 +25,16 @@ export default function ProjectPage() {
       const slides = await window.api.getSlidesContent()
       setSlides(slides)
 
+      setCss(await window.api.getCss(projectName + '/style.css'))
+
+      console.log('CSS loaded:', css)
+
       setIsLoading(false)
+      console.log('Slides loaded:', slides)
     }
 
     fetchSlides()
-  }, [])
+  }, [projectName, css])
 
   // Gère le changement de slide avec les flèches gauche/droite et la touche Escape
   useEffect(() => {
@@ -73,6 +82,7 @@ export default function ProjectPage() {
 
   return (
     <main className="project-page">
+      <style>{css}</style>
       {currentSlide === 0 ? (
         <section className="first-slide">
           <h1 className="project-title">{firstSlide.title}</h1>

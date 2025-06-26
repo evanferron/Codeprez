@@ -24,7 +24,9 @@ export const renderMarkdown = (markdown) => {
             hljs.highlight(code, { language: lang, ignoreIllegals: true }).value +
             '</code></pre>'
           )
-        } catch (e) {}
+        } catch (e) {
+          console.error(`Erreur de highlight.js pour le langage ${lang}:`, e)
+        }
       }
       return `<pre class="hljs"><code class="hljs">${md.utils.escapeHtml(code)}</code></pre>`
     }
@@ -62,6 +64,7 @@ function replaceCodeLinks(markdown, basePath) {
         const code = content.slice(Number(start) - 1, Number(end)).join('\n')
         return `\n\`\`\`js\n${code}\n\`\`\`\n`
       } catch (e) {
+        console.error(`Erreur lecture fichier ${filePath}:`, e)
         return `<span style="color:red">Erreur lecture fichier: ${filePath}</span>`
       }
     }
@@ -107,6 +110,18 @@ export const readFirstSlideContent = (basePath) => {
       } catch (parseError) {
         reject(parseError)
       }
+    })
+  })
+}
+
+export const readFileContent = (filePath) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      resolve(data)
     })
   })
 }

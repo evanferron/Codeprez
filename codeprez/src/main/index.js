@@ -3,8 +3,11 @@ import path, { join } from 'path'
 import fs from 'fs'
 import icon from '../../resources/icon.png?asset'
 import { handleChooseFile, handleCompileProject, handleImportProject } from './utils/eventHandler'
-import { getSlidesContent, readFirstSlideContent } from './utils/markdown.js'
+import { getSlidesContent, readFileContent, readFirstSlideContent } from './utils/markdown.js'
 import { exec } from 'child_process'
+
+export let pathTemp
+
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -33,6 +36,8 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  pathTemp = path.join(app.getPath('temp'), 'codeprez')
+  console.log('Temporary path:', pathTemp)
   ipcMain.handle('selectFile', async (_, type) => await handleChooseFile(type))
   ipcMain.handle('importProject', handleImportProject)
   ipcMain.handle(
@@ -40,6 +45,34 @@ app.whenReady().then(() => {
     async (_, projectName, conf, pres, style, env, assets) =>
       await handleCompileProject(projectName, conf, pres, style, env, assets)
   )
+
+  ipcMain.handle('getCss', async (_, path) => {
+    return await readFileContent(path)
+  })
+
+  ipcMain.handle('getSlidesContent', async () => {
+    const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
+    return await getSlidesContent(filePath)
+  })
+
+  ipcMain.handle('readFirstSlideContent', async () => {
+    const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
+    return await readFirstSlideContent(filePath)
+  })
+
+  ipcMain.handle('runCommand', async (_, command) => {
+    // Force le cwd sur le dossier temporaire de la présentation
+    const tempDir = path.join(pathTemp, 'example-presentation', 'assets')
+    return new Promise((resolve) => {
+      exec(command, { cwd: tempDir }, (error, stdout, stderr) => {
+        if (error) {
+          resolve(stderr || error.message)
+        } else {
+          resolve(stdout)
+        }
+      })
+    })
+  })
 
   createWindow()
 
@@ -63,29 +96,3 @@ app.on('quit', () => {
     }
   })
 })
-
-ipcMain.handle('getSlidesContent', async () => {
-  const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
-  return await getSlidesContent(filePath)
-})
-
-ipcMain.handle('readFirstSlideContent', async () => {
-  const filePath = path.join(app.getPath('temp'), 'codeprez', 'example-presentation')
-  return await readFirstSlideContent(filePath)
-})
-
-ipcMain.handle('runCommand', async (_, command) => {
-  // Force le cwd sur le dossier temporaire de la présentation
-  const tempDir = path.join(app.getPath('temp'), 'codeprez', 'example-presentation', 'assets')
-  return new Promise((resolve) => {
-    exec(command, { cwd: tempDir }, (error, stdout, stderr) => {
-      if (error) {
-        resolve(stderr || error.message)
-      } else {
-        resolve(stdout)
-      }
-    })
-  })
-})
-
-export const pathTemp = path.join(app.getPath('temp'), 'codeprez')

@@ -16,7 +16,6 @@ createRoot(document.getElementById('root')).render(
         <Route path="/project" element={<ProjectPage />} />
         <Route path="/subproject" element={<SubProjectPage />} />
         <Route path="*" element={<ErrorPage />} />
-        
       </Routes>
     </HashRouter>
   </StrictMode>
