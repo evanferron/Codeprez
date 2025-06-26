@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import '../styles/home.css'
+import { Link } from 'react-router-dom'
 
 export default function HomePage() {
   const navigate = useNavigate()

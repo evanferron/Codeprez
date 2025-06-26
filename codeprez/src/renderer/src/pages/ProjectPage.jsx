@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import './ProjectPage.css'
 import 'highlight.js/styles/github.css'
+import { useNavigate } from 'react-router-dom'
 
 export default function ProjectPage() {
   const [firstSlide, setFirstSlide] = useState({ title: '', members: [] })
   const [slides, setSlides] = useState(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const navigate = useNavigate()
 
   // Charge les slides et le premier slide au chargement du composant
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function ProjectPage() {
     fetchSlides()
   }, [])
 
-  // Gère le changement de slide avec les flèches gauche/droite
+  // Gère le changement de slide avec les flèches gauche/droite et la touche Escape
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') {
@@ -34,10 +36,13 @@ export default function ProjectPage() {
       if (e.key === 'ArrowLeft') {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev))
       }
+      if (e.key === 'Escape') {
+        navigate('/')
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [slides])
+  }, [slides, navigate])
 
   // Ajoute les listeners aux boutons de commande après chaque rendu de slide
   useEffect(() => {

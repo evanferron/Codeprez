@@ -15,7 +15,6 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<HomePage />} />
         <Route path="/project" element={<ProjectPage />} />
         <Route path="/subproject" element={<SubProjectPage />} />
-        <Route path="/app" element={<App />} />
         <Route path="*" element={<ErrorPage />} />
         
       </Routes>
