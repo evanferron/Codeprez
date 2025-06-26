@@ -5,7 +5,6 @@ export default function ProjectPage() {
     <main>
       <div>Project</div>
       <Link to="/">home</Link>
-      <Link to="/app">app</Link>
     </main>
   )
 }
