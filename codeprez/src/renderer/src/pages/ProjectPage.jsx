@@ -30,7 +30,7 @@ export default function ProjectPage() {
       console.log('CSS loaded:', css)
 
       setIsLoading(false)
-      console.log('Slides loaded:', slides)
+      await window.api.openSubPresentationPage(slides[0], slides[1], firstSlide.styleCss, firstSlide.duration)
     }
 
     fetchSlides()
@@ -41,17 +41,26 @@ export default function ProjectPage() {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') {
         setCurrentSlide((prev) => (slides && prev < slides.length - 1 ? prev + 1 : prev))
-      }
+       }
       if (e.key === 'ArrowLeft') {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev))
-      }
+       }
       if (e.key === 'Escape') {
+        window.api.closeSubPresentation()
         navigate('/')
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [slides, navigate])
+
+  useEffect(() => {
+    const changeSlide = async () => {
+      await window.api.changeSlideSubPresentation(slides[currentSlide - 1], slides[currentSlide], firstSlide.styleCss, firstSlide.duration)
+    }
+
+    changeSlide()
+  }, [currentSlide])
 
   // Ajoute les listeners aux boutons de commande après chaque rendu de slide
   useEffect(() => {

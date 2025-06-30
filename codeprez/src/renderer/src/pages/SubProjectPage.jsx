@@ -11,12 +11,14 @@ export default function SubProjectPage() {
   const [isRunning, setIsRunning] = useState(false)
 
   useEffect(() => {
-    let intervalId
-    if (isRunning) {
-      intervalId = setInterval(() => setTime(time + 1), 10)
-    }
-    return () => clearInterval(intervalId)
-  }, [isRunning, time])
+  let intervalId;
+  if (isRunning) {
+    intervalId = setInterval(() => {
+      setTime(prev => prev + 1);
+    }, 10);
+  }
+  return () => clearInterval(intervalId);
+}, [isRunning]);
 
   const hours = Math.floor(time / 360000)
   const minutes = Math.floor((time % 360000) / 6000)
@@ -31,12 +33,21 @@ export default function SubProjectPage() {
     setTime(0)
   }
 
-  window.api.getProps((currentSlide, nextSlide, styleCss, timer) => {
-    setCurrentSlide(currentSlide)
-    setNextSlide(nextSlide)
-    setStyleCss(styleCss)
-    setTimer(timer)
-  })
+  useEffect(() => {
+    window.subPresentation.getProps((currentSlide, nextSlide, styleCss, timer) => {
+      setCurrentSlide(currentSlide);
+      setNextSlide(nextSlide); 
+      setStyleCss(styleCss);
+      setTimer(timer);
+    })
+
+    window.subPresentation.changeSlide((currentSlide, nextSlide, styleCss, timer) => {
+      setCurrentSlide(currentSlide);
+      setNextSlide(nextSlide); 
+      setStyleCss(styleCss);
+      setTimer(timer);
+    });
+  }, []);
 
   return (
     <main className="subproject-main">
