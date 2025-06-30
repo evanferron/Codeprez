@@ -51,10 +51,18 @@ export const chooseFile = async (type) => {
   })
 }
 
-export const createProject = async (projectName, conf, pres, style, env, assets) => {
+export const createProject = async (projectName, conf, pres, style, env, assets, manualConfig = null) => {
   const projectPath = path.join(getTempPath(), projectName)
   fs.mkdirSync(projectPath, { recursive: true })
-  fs.copyFileSync(conf, path.join(projectPath, 'config.json'))
+  
+  if (manualConfig) {
+    // Si c'est une config manuelle (title, members, duration) on créer le fichier config.json
+    const configPath = path.join(projectPath, 'config.json')
+    fs.writeFileSync(configPath, JSON.stringify(manualConfig, null, 2))
+  } else {
+    fs.copyFileSync(conf, path.join(projectPath, 'config.json'))
+  }
+  
   fs.copyFileSync(pres, path.join(projectPath, 'presentation.md'))
   fs.copyFileSync(style, path.join(projectPath, 'style.css'))
   fs.cpSync(env, path.join(projectPath, 'env'), { recursive: true })

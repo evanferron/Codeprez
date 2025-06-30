@@ -37,8 +37,8 @@ app.whenReady().then(() => {
   ipcMain.handle('importProject', handleImportProject)
   ipcMain.handle(
     'compileProject',
-    async (_, projectName, conf, pres, style, env, assets) =>
-      await handleCompileProject(projectName, conf, pres, style, env, assets)
+    async (_, projectName, conf, pres, style, env, assets, manualConfig) =>
+      await handleCompileProject(projectName, conf, pres, style, env, assets, manualConfig)
   )
 
   ipcMain.handle('getCss', async (_, path) => {
