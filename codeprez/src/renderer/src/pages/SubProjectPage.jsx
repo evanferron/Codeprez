@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import './SubProjectPage.css'
+import '../styles/subproject.css'
 
 export default function SubProjectPage() {
   const [currentSlide, setCurrentSlide] = useState('')
@@ -11,14 +11,14 @@ export default function SubProjectPage() {
   const [isRunning, setIsRunning] = useState(false)
 
   useEffect(() => {
-  let intervalId;
-  if (isRunning) {
-    intervalId = setInterval(() => {
-      setTime(prev => prev + 1);
-    }, 10);
-  }
-  return () => clearInterval(intervalId);
-}, [isRunning]);
+    let intervalId
+    if (isRunning) {
+      intervalId = setInterval(() => {
+        setTime((prev) => prev + 1)
+      }, 10)
+    }
+    return () => clearInterval(intervalId)
+  }, [isRunning])
 
   const hours = Math.floor(time / 360000)
   const minutes = Math.floor((time % 360000) / 6000)
@@ -35,19 +35,19 @@ export default function SubProjectPage() {
 
   useEffect(() => {
     window.subPresentation.getProps((currentSlide, nextSlide, styleCss, timer) => {
-      setCurrentSlide(currentSlide);
-      setNextSlide(nextSlide); 
-      setStyleCss(styleCss);
-      setTimer(timer);
+      setCurrentSlide(currentSlide)
+      setNextSlide(nextSlide)
+      setStyleCss(styleCss)
+      setTimer(timer)
     })
 
     window.subPresentation.changeSlide((currentSlide, nextSlide, styleCss, timer) => {
-      setCurrentSlide(currentSlide);
-      setNextSlide(nextSlide); 
-      setStyleCss(styleCss);
-      setTimer(timer);
-    });
-  }, []);
+      setCurrentSlide(currentSlide)
+      setNextSlide(nextSlide)
+      setStyleCss(styleCss)
+      setTimer(timer)
+    })
+  }, [])
 
   return (
     <main className="subproject-main">
@@ -55,12 +55,17 @@ export default function SubProjectPage() {
       <div className="subproject-page">
         <div className="left-section">
           <div className="current-slide">
-            <div contentEditable="true" dangerouslySetInnerHTML={{ __html: currentSlide }}></div>
+            <section className="slide" dangerouslySetInnerHTML={{ __html: currentSlide }}></section>
           </div>
         </div>
         <div className="right-section">
           <div className="next-slide">
-            <div contentEditable="true" dangerouslySetInnerHTML={{ __html: nextSlide }}></div>
+            <div className="miniature-wrapper">
+              <section
+                className="miniature"
+                dangerouslySetInnerHTML={{ __html: nextSlide }}
+              ></section>
+            </div>
           </div>
           <div className="timer">
             <h2>Timer</h2>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import './ProjectPage.css'
 import 'highlight.js/styles/github.css'
+import '../styles/project.css'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 export default function ProjectPage() {
@@ -30,7 +30,7 @@ export default function ProjectPage() {
       console.log('CSS loaded:', css)
 
       setIsLoading(false)
-      await window.api.openSubPresentationPage(slides[0], slides[1], firstSlide.styleCss, firstSlide.duration)
+      await window.api.openSubPresentationPage(slides[0], slides[1], css, firstSlide.duration)
     }
 
     fetchSlides()
@@ -56,7 +56,7 @@ export default function ProjectPage() {
 
   useEffect(() => {
     const changeSlide = async () => {
-      await window.api.changeSlideSubPresentation(slides[currentSlide - 1], slides[currentSlide], firstSlide.styleCss, firstSlide.duration)
+      await window.api.changeSlideSubPresentation(slides[currentSlide - 1], slides[currentSlide], css, firstSlide.duration)
     }
 
     changeSlide()
