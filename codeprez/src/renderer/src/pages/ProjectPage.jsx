@@ -7,7 +7,6 @@ export default function ProjectPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const projectPath = location.state?.projectName
-  console.log('Project name:', projectPath)
   const [firstSlide, setFirstSlide] = useState({ title: '', members: [] })
   const [slides, setSlides] = useState(null)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -27,8 +26,6 @@ export default function ProjectPage() {
 
       setCss(await window.api.getCss(projectPath + '/style.css'))
 
-      console.log('CSS loaded:', css)
-
       setIsLoading(false)
       await window.api.openSubPresentationPage(slides[0], slides[1], css, firstSlide.duration)
     }
@@ -41,10 +38,10 @@ export default function ProjectPage() {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') {
         setCurrentSlide((prev) => (slides && prev < slides.length - 1 ? prev + 1 : prev))
-       }
+      }
       if (e.key === 'ArrowLeft') {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev))
-       }
+      }
       if (e.key === 'Escape') {
         window.api.closeSubPresentation()
         navigate('/')
@@ -56,7 +53,12 @@ export default function ProjectPage() {
 
   useEffect(() => {
     const changeSlide = async () => {
-      await window.api.changeSlideSubPresentation(slides[currentSlide - 1], slides[currentSlide], css, firstSlide.duration)
+      await window.api.changeSlideSubPresentation(
+        slides[currentSlide - 1],
+        slides[currentSlide],
+        css,
+        firstSlide.duration
+      )
     }
 
     changeSlide()
