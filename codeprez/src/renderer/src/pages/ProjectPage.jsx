@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import 'highlight.js/styles/github.css'
-import '../styles/project.css'
+import '../styles/ProjectPage.css'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 export default function ProjectPage() {

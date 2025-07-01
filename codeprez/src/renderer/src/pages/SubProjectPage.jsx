@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import '../styles/subproject.css'
+import '../styles/SubProjectPage.css'
 
 export default function SubProjectPage() {
   const [currentSlide, setCurrentSlide] = useState('')
