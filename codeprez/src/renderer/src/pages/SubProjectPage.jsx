@@ -34,13 +34,14 @@ export default function SubProjectPage() {
   }
 
   useEffect(() => {
+    // Initialisation avec getProps (pour la première ouverture)
     window.subPresentation.getProps((currentSlide, nextSlide, styleCss, timer) => {
       setCurrentSlide(currentSlide)
       setNextSlide(nextSlide)
       setStyleCss(styleCss)
       setTimer(timer)
     })
-
+    // Mise à jour à chaque changement de slide
     window.subPresentation.changeSlide((currentSlide, nextSlide, styleCss, timer) => {
       setCurrentSlide(currentSlide)
       setNextSlide(nextSlide)
