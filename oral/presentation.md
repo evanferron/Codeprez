@@ -1,4 +1,5 @@
 # Projet CodePrez
+
 ## Application de Présentation avec Electron
 
 **Développé par :** Chaffaux Kévin, Bellaud Matias, Ferron Evan
@@ -6,39 +7,61 @@
 
 ---
 
+### Sommaire
+
+1. Projet CodePrez
+2. Objectifs du Projet
+3. Architecture Technique
+4. Format .codeprez
+5. Fonctionnalités Développées
+6. Démonstration - Affichage de Code
+7. Défis Techniques Relevés
+8. main
+9. preload
+10. render
+11. Fonctionnalités Bonus
+12. Architecture du Code
+13. Démonstration
+14. Conclusion
+15. Questions & Réponses
+
+---
+
 ## Objectifs du Projet
 
 ### Créer une application de présentation moderne
+
 - Alternative à PowerPoint/Keynote
 - Contenu défini en **Markdown** et **CSS**
 - Fonctionnalités spéciales pour développeurs
 
 ### Fonctionnalités clés
-- Affichage de code scrollable
-- Exécution de commandes depuis les diapositives
-- Interface desktop avec Electron
+
+- 📦 Création d’archives `.codeprez` contenant :
+- 📂 Ouverture et lecture de fichiers `.codeprez`
+- 💻 Affichage de blocs de code avec surlignage syntaxique
+- 🧪 Exécution de commandes shell depuis les diapositives
+- 🧭 Mode présentation double écran
 
 ---
 
 ## Architecture Technique
 
 ### Technologies utilisées
-- **Electron** - Framework desktop
-- **Node.js** - Backend et manipulation système
-- **Markdown-it** - Parsing du contenu
-- **Highlight.js** - Coloration syntaxique
 
-### Process Model d'Electron
-- Main Process pour la gestion système
-- Renderer Process pour l'interface
-- Communication sécurisée via IPC
+- **Electron** - Framework desktop ![Une image](./assets/logo_electron.png)
+- **ReactJs** - Framework front ![Une image](./assets/react.png)
+- **Node.js** - Backend et manipulation système ![Une image](./assets/nodeJs.jpg)
+- **Markdown-it** - Parsing du contenu ![Une image](./assets/md.png)
+- **Highlight.js** - Coloration syntaxique
 
 ---
 
 ## Format .codeprez
 
 ### Structure de l'archive
-```
+
+```tree
 presentation.codeprez (zip renommé)
 ├── presentation.md
 ├── style.css
@@ -47,53 +70,53 @@ presentation.codeprez (zip renommé)
 │   ├── images/
 │   └── code-files/
 └── env/
-    └── working-directory/
+    └── script.js
 ```
-
-### Avantages
-- Portabilité complète
-- Assets intégrés
-- Environnement d'exécution inclus
 
 ---
 
 ## Fonctionnalités Développées
 
 ### ✅ Création d'archives .codeprez
+
 - Interface de sélection de fichiers
 - Compression automatique
 - Validation des fichiers requis
+- Personalisation de la configuration (le conf.json)
 
 ### ✅ Ouverture et affichage
+
 - Désarchivage temporaire
-- Analyse du Markdown
-- Rendu en plein écran
+- Analyse et affichage du Markdown avec du css
+- Affichage plein écran de la présentation
+- Affichage présentateur avec chrono
 
 ---
 
-# Une image
+### Exécution de commande bash
 
-J'espère que votre application supporte l'ajout d'image et qu'elles ne dépasseront pas du cadre! 😉
+## Commandes exécutables
 
-![Une image](./assets/image.jpg)
-
----
-
-### Inclusion de code externe
-[Code](./assets/main.js#5-20)
-
-### Commandes exécutables
 ```bash
-npm install
+echo hello
+```
+
+## Exécution d'un script
+
+```bash
+node index.js
 ```
 
 ---
 
 ## Démonstration - Affichage de Code
 
+### Code importé
+
 [Code](./assets/preload.js#1-15)
 
 ### Code scrollable intégré
+
 ```javascript
 const { app, BrowserWindow } = require('electron');
 
@@ -114,39 +137,57 @@ function createWindow() {
 
 ---
 
-## Démonstration - Exécution de Commandes
-
-### Installation des dépendances
-```bash
-node index.js
-```
-
----
-
 ## Défis Techniques Relevés
 
 ### Communication Inter-Process
+
 - **ContextBridge** pour la sécurité
 - **IPC** pour les échanges Main ↔ Renderer
 - Gestion asynchrone des opérations
 
 ### Gestion Multi-plateforme
+
 - Chemins de fichiers adaptés
 - Associations de types de fichiers
 - Packaging spécifique par OS
 
 ---
 
+## main
+
+La création de nos fenêtre :
+
+[Code](./assets/main.js#1-166)
+
+---
+
+## preload
+
+La définition du context bridge :
+
+[Code](./assets/preload.js#1-61)
+
+---
+
+## render
+
+Le front :
+
+[Code](./assets/HomePage.jsx#1-198)
+
+---
+
 ## Fonctionnalités Bonus
 
-### Mode Présentation (si implémenté)
+### Mode Présentation
+
 - Écran présentateur avec chronomètre
 - Aperçu de la diapositive suivante
 - Affichage plein écran sur écran principal
 
 ### Autres améliorations
+
 - Gestion des erreurs robuste
-- Interface utilisateur intuitive
 - Raccourcis clavier
 
 ---
@@ -154,7 +195,8 @@ node index.js
 ## Architecture du Code
 
 ### Structure des fichiers
-```
+
+```tree
 src
   ├── main
   │  ├── index.js
@@ -185,57 +227,24 @@ src
 
 ---
 
-## Défis et Solutions
-
-### Défi 1: Parsing Markdown complexe
-**Solution:** Expressions régulières pour identifier les blocs spéciaux
-
-### Défi 2: Exécution sécurisée de commandes
-**Solution:** Isolation dans le dossier `env` avec `child_process`
-
-### Défi 3: Communication sécurisée
-**Solution:** ContextBridge et désactivation de nodeIntegration
-
----
-
-## Résultats et Accomplissements
-
-### ✅ Fonctionnalités core implémentées
-- Création/ouverture de .codeprez
-- Navigation entre diapositives
-- Affichage de code avec coloration
-
-### ✅ Fonctionnalités avancées
-- Exécution de commandes
-- Inclusion de fichiers externes
-- Interface native
-
----
-
-## Démonstration Live
-
-### Test de l'application
-Ouverture de cette présentation dans notre application CodePrez
-
-### Points clés à montrer
-1. Interface de création
-2. Navigation fluide
-3. Exécution de commandes
-4. Affichage de code
+## Démonstration
 
 ---
 
 ## Conclusion
 
 ### Compétences acquises
+
 - Maîtrise d'Electron et son process model
 - Manipulation du système avec Node.js
 - Création d'interfaces desktop natives
 
 ### Application fonctionnelle
+
 Une alternative viable aux outils de présentation traditionnels, optimisée pour les développeurs
 
 ### Prêt pour la production
+
 Packaging multi-plateforme et association de fichiers
 
 ---
@@ -243,5 +252,3 @@ Packaging multi-plateforme et association de fichiers
 ## Questions & Réponses
 
 Merci pour votre attention !
-
-**Démonstration interactive disponible**

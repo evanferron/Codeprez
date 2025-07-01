@@ -7,11 +7,11 @@ import { getTempPath } from '..'
 export const zipFile = (projectName, config, pres, style, env, assets, destination) => {
   const zip = new AdmZip()
 
-  zip.addLocalFile(config)
-  zip.addLocalFile(pres)
-  zip.addLocalFile(style)
-  zip.addLocalFolder(env)
-  zip.addLocalFolder(assets)
+  zip.addLocalFile(config, '', 'config.json')
+  zip.addLocalFile(pres, '', 'presentation.md')
+  zip.addLocalFile(style, '', 'style.css')
+  zip.addLocalFolder(env, 'env')
+  zip.addLocalFolder(assets, 'assets')
 
   zip.writeZip(path.join(destination, `${projectName}.zip`))
 
@@ -51,7 +51,15 @@ export const chooseFile = async (type) => {
   })
 }
 
-export const createProject = async (projectName, conf, pres, style, env, assets, manualConfig = null) => {
+export const createProject = async (
+  projectName,
+  conf,
+  pres,
+  style,
+  env,
+  assets,
+  manualConfig = null
+) => {
   const projectPath = path.join(getTempPath(), projectName)
   fs.mkdirSync(projectPath, { recursive: true })
 
