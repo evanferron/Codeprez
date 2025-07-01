@@ -98,7 +98,7 @@ app.whenReady().then(() => {
   ipcMain.handle('runCommand', async (_, command, filePath) => {
     console.log('Running command:', command, 'in path:', filePath)
     // Force le cwd sur le dossier temporaire de la présentation
-    const tempDir = path.join(filePath, 'assets')
+    const tempDir = path.join(filePath, 'env')
     return new Promise((resolve) => {
       exec(command, { cwd: tempDir }, (error, stdout, stderr) => {
         if (error) {
