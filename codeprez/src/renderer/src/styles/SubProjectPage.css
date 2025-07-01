@@ -60,6 +60,7 @@ html {
 .left-section {
   flex: 2;
   overflow: auto;
+  height: calc(100vh - 4rem);
 }
 
 .right-section {
@@ -75,7 +76,6 @@ html {
 .next-slide {
   background: var(--surface-light);
   border-radius: 16px;
-  border: 1.5px solid var(--border);
   min-height: 180px;
   color: var(--text);
   font-size: 1.1rem;
@@ -87,6 +87,8 @@ html {
   min-height: 220px;
   font-weight: 500;
   height: 100%;
+  overflow: hidden;
+  background-color: #fff;
 
   img {
     object-fit: contain;
@@ -102,7 +104,7 @@ html {
 
 .next-slide .miniature-wrapper {
   width: 100%;
-  height: 220px; 
+  height: 220px;
   overflow: hidden;
   position: relative;
   background: var(--surface);
@@ -110,16 +112,16 @@ html {
   padding: 10px;
   box-sizing: border-box;
   border: 1.5px solid var(--border);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-
 .next-slide .miniature {
-  width: 222%; 
-  height: 400px; 
+  width: 222%;
+  height: 440px;
   transform: scale(0.45);
   transform-origin: top left;
   pointer-events: none;
+  overflow: hidden;
 
   img {
     object-fit: contain;
@@ -127,16 +129,20 @@ html {
   }
 }
 
-.subproject-page  section {
+.subproject-page section {
   outline: 1.5px solid var(--primary);
-  padding: 10px;
   min-height: 120px;
   border-radius: 8px;
   color: var(--text);
   box-sizing: border-box;
   font-size: 1.1rem;
   height: 100%;
+  width: 100%;
   transition: outline 0.2s;
+}
+
+.subproject-page section img {
+  object-fit: contain;
 }
 
 .timer {

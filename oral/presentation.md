@@ -1,4 +1,4 @@
-### Sommaire
+## Sommaire
 
 1. Projet CodePrez
 2. Objectifs du Projet
@@ -84,15 +84,15 @@ presentation.codeprez (zip renommé)
 
 ---
 
-### Exécution de commande bash
+## Exécution de commande bash
 
-## Commandes exécutables
+### Commandes exécutables
 
 ```bash
 echo hello
 ```
 
-## Exécution d'un script
+### Exécution d'un script
 
 ```bash
 node index.js
@@ -232,11 +232,11 @@ src
 
 ### Application fonctionnelle
 
-Une alternative viable aux outils de présentation traditionnels, optimisée pour les développeurs
+- Une alternative viable aux outils de présentation traditionnels, optimisée pour les développeurs
 
 ### Prêt pour la production
 
-Packaging multi-plateforme et association de fichiers
+- Packaging multi-plateforme et association de fichiers
 
 ---
 

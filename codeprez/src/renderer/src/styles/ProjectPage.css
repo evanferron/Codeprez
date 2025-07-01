@@ -9,7 +9,6 @@
   /* A supprimer une fois qu'on aura import le style.css */
   section {
     color: #252525;
-    padding: 1rem;
     box-sizing: border-box;
     max-width: 100vw;
     max-height: 100vh;
