@@ -1,0 +1,57 @@
+├── .editorconfig
+├── .gitignore
+├── .prettierignore
+├── .prettierrc.yaml
+├── .vscode
+│  ├── extensions.json
+│  ├── launch.json
+│  └── settings.json
+├── build
+│  ├── entitlements.mac.plist
+│  ├── icon.icns
+│  ├── icon.ico
+│  └── icon.png
+├── electron-builder.yml
+├── electron.vite.config.mjs
+├── eslint.config.mjs
+├── out
+│  ├── main
+│  │  └── index.js
+│  ├── preload
+│  │  └── index.js
+│  └── renderer
+│    ├── assets
+│    │  ├── index-1MAVNsQe.js
+│    │  └── index-D7BM9oRw.css
+│    └── index.html
+├── package-lock.json
+├── package.json
+├── README.md
+├── resources
+│  └── icon.png
+└── src
+  ├── main
+  │  ├── index.js
+  │  └── utils
+  │    ├── eventHandler.js
+  │    ├── markdown.js
+  │    └── zip.js
+  ├── preload
+  │  └── index.js
+  └── renderer
+    ├── index.html
+    └── src
+      ├── assets
+      │  ├── base.css
+      │  ├── electron.svg
+      │  └── wavy-lines.svg
+      ├── main.jsx
+      ├── pages
+      │  ├── ErrorPage.jsx
+      │  ├── HomePage.jsx
+      │  ├── ProjectPage.jsx
+      │  └── SubProjectPage.jsx
+      └── styles
+        ├── home.css
+        ├── ProjectPage.css
+        └── SubProjectPage.css
