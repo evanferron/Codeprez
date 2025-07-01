@@ -65,14 +65,12 @@ function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
   })
 
   subWindow.webContents.on('did-finish-load', () => {
-    setTimeout(() => {
-      subWindow.webContents.send('get-props', {
-        currentSlide: currentSlide,
-        nextSlide: nextSlide,
-        styleCss: styleCss,
-        timer: timer
-      })
-    }, 100)
+    subWindow.webContents.send('get-props', {
+      currentSlide: currentSlide,
+      nextSlide: nextSlide,
+      styleCss: styleCss,
+      timer: timer
+    })
   })
 }
 
@@ -100,7 +98,7 @@ app.whenReady().then(() => {
   ipcMain.handle('runCommand', async (_, command, filePath) => {
     console.log('Running command:', command, 'in path:', filePath)
     // Force le cwd sur le dossier temporaire de la présentation
-    const tempDir = path.join(filePath, 'env')
+    const tempDir = path.join(filePath, 'assets')
     return new Promise((resolve) => {
       exec(command, { cwd: tempDir }, (error, stdout, stderr) => {
         if (error) {

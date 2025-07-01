@@ -1,0 +1,362 @@
+/* CodePrez - Style de présentation moderne */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0;
+  padding: 0;
+  color: #333;
+  overflow: hidden;
+}
+
+section {
+  width: 100vw;
+  height: 100vh;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  margin: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow-y: auto;
+}
+
+img {
+  width: 30rem;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre principal */
+h1 {
+  font-size: 3.5em;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Sous-titres */
+h2 {
+  font-size: 2.5em;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 0.8em;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+h3 {
+  font-size: 1.8em;
+  font-weight: 500;
+  color: #667eea;
+  margin: 1em 0 0.5em 0;
+  text-align: left;
+  width: 100%;
+}
+
+/* Paragraphes */
+p {
+  font-size: 1.3em;
+  line-height: 1.6;
+  color: #2c3e50;
+  max-width: 900px;
+  margin: 0.8em auto;
+  text-align: left;
+}
+
+/* Listes */
+ul,
+ol {
+  font-size: 1.2em;
+  line-height: 1.8;
+  color: #2c3e50;
+  text-align: left;
+  margin: 1em auto;
+}
+
+li {
+  margin: 0.5em 0;
+  padding-left: 10px;
+}
+
+ul li::marker {
+  color: #667eea;
+  font-size: 1.2em;
+}
+
+/* Blocs de code */
+pre {
+  background: #2d3748;
+  color: #e2e8f0;
+  padding: 20px;
+  border-radius: 12px;
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 1000px;
+  max-width: 100%;
+  width: 40rem;
+  margin: 20px auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #4a5568;
+}
+
+code {
+  background: #f7fafc;
+  color: #2d3748;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.9em;
+  border: 1px solid #e2e8f0;
+}
+
+pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+}
+
+/* Coloration syntaxique */
+.hljs {
+  background: #2d3748 !important;
+  color: #e2e8f0 !important;
+}
+
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #f093fb !important;
+}
+
+.hljs-string,
+.hljs-attr {
+  color: #48bb78 !important;
+}
+
+.hljs-comment {
+  color: #718096 !important;
+  font-style: italic;
+}
+
+.hljs-function,
+.hljs-title {
+  color: #4299e1 !important;
+}
+
+.hljs-number {
+  color: #ed8936 !important;
+}
+
+/* Commandes exécutables */
+.command-block {
+  background: #1a202c;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.command-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.command-text {
+  font-family: "Fira Code", monospace;
+  color: #48bb78;
+  font-size: 1.1em;
+  margin-right: 15px;
+  flex: 1;
+}
+
+.execute-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.execute-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.command-output {
+  background: #000;
+  color: #00ff00;
+  font-family: "Fira Code", monospace;
+  padding: 15px;
+  border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+  border: 1px solid #2d3748;
+}
+
+/* Mise en évidence */
+.highlight {
+  background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+  padding: 15px 25px;
+  border-radius: 12px;
+  margin: 20px auto;
+  max-width: 900px;
+  border-left: 5px solid #667eea;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Émojis et icônes */
+.emoji {
+  font-size: 1.5em;
+  margin: 0 5px;
+}
+
+/* Checkmarks pour les accomplissements */
+.checkmark {
+  color: #48bb78;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* Animation d'apparition */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Architecture du code */
+.code-structure {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  section {
+    padding: 40px;
+  }
+
+  h1 {
+    font-size: 2.8em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  p,
+  ul,
+  ol {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 768px) {
+  section {
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 2.2em;
+  }
+
+  h2 {
+    font-size: 1.6em;
+  }
+
+  pre {
+    font-size: 0.8em;
+    padding: 15px;
+  }
+}
+
+/* Effets de transition */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a67d8;
+}
+
+/* Style pour la diapositive de titre */
+.title-slide {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.title-slide h1,
+.title-slide h2 {
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Style pour les diapositives de conclusion */
+.conclusion-slide {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.conclusion-slide h1,
+.conclusion-slide h2,
+.conclusion-slide h3 {
+  color: white;
+}
