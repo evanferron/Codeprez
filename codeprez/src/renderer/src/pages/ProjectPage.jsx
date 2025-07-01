@@ -7,7 +7,6 @@ export default function ProjectPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const projectPath = location.state?.projectName
-  console.log('Project name:', projectPath)
   const [firstSlide, setFirstSlide] = useState({ title: '', members: [] })
   const [slides, setSlides] = useState(null)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -27,10 +26,7 @@ export default function ProjectPage() {
 
       setCss(await window.api.getCss(projectPath + '/style.css'))
 
-      console.log('CSS loaded:', css)
-
       setIsLoading(false)
-      console.log('Slides loaded:', slides)
     }
 
     fetchSlides()
