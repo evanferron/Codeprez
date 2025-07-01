@@ -46,7 +46,7 @@ if (process.contextIsolated) {
 
 contextBridge.exposeInMainWorld('subPresentation', {
   getProps: (callback) => {
-    ipcRenderer.on('get-props', (e, data) => {
+    ipcRenderer.once('get-props', (e, data) => {
       callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer)
     })
   },

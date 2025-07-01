@@ -1,7 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain, screen } from 'electron'
 import path, { join } from 'path'
 import fs from 'fs'
-import icon from '../../resources/icon.png?asset'
+import iconLogo from '../../resources/Icon-C.png?asset'
 import { handleChooseFile, handleCompileProject, handleImportProject } from './utils/eventHandler'
 import { getSlidesContent, readFileContent, readFirstSlideContent } from './utils/markdown.js'
 import { exec } from 'child_process'
@@ -12,7 +12,8 @@ function createWindow() {
     height: 670,
     show: false,
     // autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform === 'linux' ? { iconLogo } : {}),
+    icon: iconLogo,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
@@ -51,6 +52,7 @@ function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
     height: 670,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
+    icon: iconLogo,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
@@ -65,12 +67,14 @@ function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
   })
 
   subWindow.webContents.on('did-finish-load', () => {
-    subWindow.webContents.send('get-props', {
-      currentSlide: currentSlide,
-      nextSlide: nextSlide,
-      styleCss: styleCss,
-      timer: timer
-    })
+    setTimeout(() => {
+      subWindow.webContents.send('get-props', {
+        currentSlide: currentSlide,
+        nextSlide: nextSlide,
+        styleCss: styleCss,
+        timer: timer
+      })
+    }, 100)
   })
 }
 

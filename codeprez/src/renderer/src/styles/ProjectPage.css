@@ -13,8 +13,8 @@
     box-sizing: border-box;
     max-width: 100vw;
     max-height: 100vh;
-    overflow: auto;
-    margin: 0;
+    overflow: hidden;
+    margin: 0 !important;
   }
 
   section .command-result {
@@ -28,7 +28,7 @@
   }
 
   section img {
-    max-width: calc(100vw - 2rem);
+    object-fit: contain;
   }
 
   .first-slide {
