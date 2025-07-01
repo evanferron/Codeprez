@@ -40,5 +40,18 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "vite": "^6.2.6"
+  },
+  "build": {
+    "productName": "CodePrez",
+    "appId": "com.codeprez.app",
+    "win": {
+      "icon": "resources/Icon-C.ico"
+    },
+    "mac": {
+      "icon": "resources/Icon-C.icns"
+    },
+    "linux": {
+      "icon": "resources/Icon-C.png"
+    }
   }
 }

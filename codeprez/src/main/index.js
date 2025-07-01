@@ -1,25 +1,30 @@
 import { app, shell, BrowserWindow, ipcMain, screen } from 'electron'
 import path, { join } from 'path'
 import fs from 'fs'
-import iconLogo from '../../resources/Icon-C.png?asset'
+import iconLogo from '../../resources/Icon-C.ico?asset'
 import { handleChooseFile, handleCompileProject, handleImportProject } from './utils/eventHandler'
 import { getSlidesContent, readFileContent, readFirstSlideContent } from './utils/markdown.js'
 import { exec } from 'child_process'
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
+    title : 'CodePrez',
     width: 900,
     height: 670,
     show: false,
     // autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { iconLogo } : {}),
-    icon: iconLogo,
+    icon: path.join(__dirname, '../../resources/Icon-C.ico'),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
       contextIsolation: true
     }
   })
+
+   mainWindow.webContents.on('did-finish-load', () => {
+      mainWindow.setTitle('CodePrez')
+    })
 
   const externalScreen = screen
     .getAllDisplays()
@@ -48,11 +53,12 @@ function createWindow() {
 let subWindow = null
 function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
   subWindow = new BrowserWindow({
+    title : 'CodePrez',
     width: 900,
     height: 670,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
-    icon: iconLogo,
+    icon: path.join(__dirname, '../../resources/Icon-C.ico'),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
@@ -67,6 +73,7 @@ function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
   })
 
   subWindow.webContents.on('did-finish-load', () => {
+    mainWindow.setTitle('CodePrez')
     setTimeout(() => {
       subWindow.webContents.send('get-props', {
         currentSlide: currentSlide,
