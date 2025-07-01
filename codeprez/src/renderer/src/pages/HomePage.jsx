@@ -52,17 +52,29 @@ export default function HomePage() {
     }
 
     if (!conf && (!title || !members || !duration)) {
-      setError('You must either provide a config.json file or fill in all manual fields (title, members, duration).')
+      setError(
+        'You must either provide a config.json file or fill in all manual fields (title, members, duration).'
+      )
       return
     }
 
-    const manualConfig = !conf ? {
-      title: title,
-      authors: members.split(',').map(m => m.trim()),
-      duration: duration.toString()
-    } : null
+    const manualConfig = !conf
+      ? {
+          title: title,
+          authors: members.split(',').map((m) => m.trim()),
+          duration: duration.toString()
+        }
+      : null
 
-    const result = await window.api.compileProject(projectName, conf, pres, styleFile, env, assets, manualConfig)
+    const result = await window.api.compileProject(
+      projectName,
+      conf,
+      pres,
+      styleFile,
+      env,
+      assets,
+      manualConfig
+    )
     if (result.success) {
       alert('Project compiled successfully!')
       console.log('Project compiled successfully:', result.projectPath)
@@ -77,7 +89,7 @@ export default function HomePage() {
       <div className="home-container">
         <section className="home-section">
           <h2>Create New Project</h2>
-          
+
           <div className="input-group">
             <label htmlFor="project-name">Project Name</label>
             <input
@@ -172,7 +184,9 @@ export default function HomePage() {
 
         <section className="home-section import-section">
           <h2>Import Project</h2>
-          <p>Already have a project? Import your existing presentation and continue working on it.</p>
+          <p>
+            Already have a project? Import your existing presentation and continue working on it.
+          </p>
           <button className="action-button" onClick={handleImport}>
             Import Existing Project
           </button>

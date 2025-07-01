@@ -35,18 +35,18 @@ if (process.contextIsolated) {
   window.api = api
 }
 
-contextBridge.exposeInMainWorld("subPresentation",{
-    getProps : (callback) => {
-        ipcRenderer.on("get-props", (e, data) => {
-            callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
-        });
-    },
+contextBridge.exposeInMainWorld("subPresentation", {
+  getProps: (callback) => {
+    ipcRenderer.on("get-props", (e, data) => {
+      callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
+    });
+  },
 
-    changeSlide : (callback) => {
-        ipcRenderer.on("change-slide", (e, data) => {
-          console.log("Change slide event received:", data);
-            callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
-        });
-    } 
+  changeSlide: (callback) => {
+    ipcRenderer.on("change-slide", (e, data) => {
+      console.log("Change slide event received:", data);
+      callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
+    });
+  }
 });
 

@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, screen } from 'electron'
 import path, { join } from 'path'
 import fs from 'fs'
 import icon from '../../resources/icon.png?asset'
@@ -20,6 +20,18 @@ function createWindow() {
     }
   })
 
+  const externalScreen = screen
+    .getAllDisplays()
+    .find((display) => display.bounds.x !== 0 || display.bounds.y !== 0)
+
+  if (externalScreen) {
+    mainWindow.setPosition(externalScreen.bounds.x + 20, externalScreen.bounds.y + 20)
+    mainWindow.setSize(externalScreen.bounds.width - 40, externalScreen.bounds.height - 40)
+  } else {
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize
+    mainWindow.setSize(width - 40, height - 40)
+    mainWindow.setPosition(20, 20)
+  }
   mainWindow.on('ready-to-show', () => {
     mainWindow.maximize()
   })
@@ -49,7 +61,7 @@ function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
   subWindow.loadFile(join(__dirname, '../renderer/index.html'), { hash: 'subproject' })
 
   subWindow.once('ready-to-show', () => {
-    subWindow.show()
+    subWindow.maximize()
   })
 
   subWindow.webContents.on('did-finish-load', () => {
@@ -155,4 +167,3 @@ app.on('quit', () => {
 export const getTempPath = () => {
   return path.join(app.getPath('temp'), 'codeprez')
 }
-
