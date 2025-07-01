@@ -32,13 +32,43 @@ function createWindow() {
   mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
 }
 
+let subWindow = null
+function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
+  subWindow = new BrowserWindow({
+    width: 900,
+    height: 670,
+    show: false,
+    ...(process.platform === 'linux' ? { icon } : {}),
+    webPreferences: {
+      preload: join(__dirname, '../preload/index.js'),
+      sandbox: true,
+      contextIsolation: true
+    }
+  })
+
+  subWindow.loadFile(join(__dirname, '../renderer/index.html'), { hash: 'subproject' })
+
+  subWindow.once('ready-to-show', () => {
+    subWindow.show()
+  })
+
+  subWindow.webContents.on('did-finish-load', () => {
+    subWindow.webContents.send('get-props', {
+      currentSlide: currentSlide,
+      nextSlide: nextSlide,
+      styleCss: styleCss,
+      timer: timer
+    })
+  })
+}
+
 app.whenReady().then(() => {
   ipcMain.handle('selectFile', async (_, type) => await handleChooseFile(type))
   ipcMain.handle('importProject', handleImportProject)
   ipcMain.handle(
     'compileProject',
-    async (_, projectName, conf, pres, style, env, assets) =>
-      await handleCompileProject(projectName, conf, pres, style, env, assets)
+    async (_, projectName, conf, pres, style, env, assets, manualConfig) =>
+      await handleCompileProject(projectName, conf, pres, style, env, assets, manualConfig)
   )
 
   ipcMain.handle('getCss', async (_, path) => {
@@ -68,6 +98,37 @@ app.whenReady().then(() => {
     })
   })
 
+  ipcMain.handle('openSubPresentationPage', async (_, currentSlide, nextSlide, styleCss, timer) => {
+    createSubWindow(currentSlide, nextSlide, styleCss, timer)
+  })
+
+  ipcMain.handle(
+    'changeSlideSubPresentation',
+    async (_, currentSlide, nextSlide, styleCss, timer) => {
+      if (subWindow && !subWindow.isDestroyed()) {
+        console.log('Change slide event received:', {
+          currentSlide,
+          nextSlide,
+          styleCss,
+          timer
+        })
+        subWindow.webContents.send('change-slide', {
+          currentSlide: currentSlide,
+          nextSlide: nextSlide,
+          styleCss: styleCss,
+          timer: timer
+        })
+      }
+    }
+  )
+
+  ipcMain.handle('closeSubPresentation', async () => {
+    if (subWindow && !subWindow.isDestroyed()) {
+      subWindow.close()
+      subWindow = null
+    }
+  })
+
   createWindow()
 
   app.on('activate', function () {
@@ -94,3 +155,4 @@ app.on('quit', () => {
 export const getTempPath = () => {
   return path.join(app.getPath('temp'), 'codeprez')
 }
+

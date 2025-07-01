@@ -35,14 +35,22 @@ export const handleImportProject = async () => {
   }
 }
 
-export const handleCompileProject = async (projectName, conf, pres, style, env, assets) => {
-  if (!conf || !pres || !style || !env || !projectName || !assets) {
+export const handleCompileProject = async (projectName, conf, pres, style, env, assets, manualConfig = null) => {
+  if (!pres || !style || !env || !projectName || !assets) {
     return {
       success: false,
-      error: 'All fields must be filled.'
+      error: 'All required fields must be filled.'
     }
   }
-  const creationResult = await createProject(projectName, conf, pres, style, env, assets)
+
+  if (!conf && !manualConfig) {
+    return {
+      success: false,
+      error: 'You must either provide a config.json file or fill in all manual fields.'
+    }
+  }
+
+  const creationResult = await createProject(projectName, conf, pres, style, env, assets, manualConfig)
   const path = await chooseFile('folder')
   if (path.canceled) {
     return {
@@ -52,7 +60,7 @@ export const handleCompileProject = async (projectName, conf, pres, style, env, 
   }
   console.log('Project creation result:', creationResult)
   console.log('Selected path for project:', path)
-  zipFile(projectName, conf, pres, style, env, assets, path.filePaths[0])
+  zipFile(projectName, conf || creationResult.projectPath + '/config.json', pres, style, env, assets, path.filePaths[0])
 
   return {
     success: true,
