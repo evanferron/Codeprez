@@ -7,11 +7,21 @@ export default function ProjectPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const projectPath = location.state?.projectName
-  const [firstSlide, setFirstSlide] = useState({ title: '', members: [] })
+  const [firstSlide, setFirstSlide] = useState({ title: '', members: [], duration: '0' })
+  const [firstSlideContent, setFirstSlideContent] = useState(null)
   const [slides, setSlides] = useState(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [css, setCss] = useState('')
+
+  const changeSlide = async () => {
+    await window.api.changeSlideSubPresentation(
+      currentSlide === 0 ? firstSlideContent : slides[currentSlide - 1],
+      slides[currentSlide],
+      css,
+      firstSlide.duration
+    )
+  }
 
   // Charge les slides et le premier slide au chargement du composant
   useEffect(() => {
@@ -19,15 +29,31 @@ export default function ProjectPage() {
       setIsLoading(true)
 
       const firstSlide = await window.api.readFirstSlideContent(projectPath)
+      const firstSlideContentBuild = `
+        <div className="first-slide">
+          <h1 class="project-title">${firstSlide.title}</h1>
+          <div class="members">
+            ${firstSlide.authors.map((author) => `<span class="member">${author}</span>`).join('')}
+          </div>
+        </div>
+      `
+      setFirstSlideContent(firstSlideContentBuild)
       setFirstSlide(firstSlide)
 
       const slides = await window.api.getSlidesContent(projectPath)
       setSlides(slides)
 
-      setCss(await window.api.getCss(projectPath + '/style.css'))
-
+      const cssLoaded = await window.api.getCss(projectPath + '/style.css')
+      setCss(cssLoaded)
       setIsLoading(false)
-      await window.api.openSubPresentationPage(slides[0], slides[1], css, firstSlide.duration)
+
+      await window.api.openSubPresentationPage(
+        currentSlide === 0 ? firstSlideContentBuild : slides[0],
+        slides && slides.length > 0 ? slides[0] : '',
+        cssLoaded,
+        firstSlide.duration
+      )
+      await changeSlide()
     }
 
     fetchSlides()
@@ -52,17 +78,8 @@ export default function ProjectPage() {
   }, [slides, navigate])
 
   useEffect(() => {
-    const changeSlide = async () => {
-      await window.api.changeSlideSubPresentation(
-        slides[currentSlide - 1],
-        slides[currentSlide],
-        css,
-        firstSlide.duration
-      )
-    }
-
-    changeSlide()
-  }, [currentSlide])
+    if (slides) changeSlide()
+  }, [slides, currentSlide])
 
   // Ajoute les listeners aux boutons de commande après chaque rendu de slide
   useEffect(() => {
@@ -95,16 +112,11 @@ export default function ProjectPage() {
     <main className="project-page">
       <style>{css}</style>
       {currentSlide === 0 ? (
-        <section className="first-slide">
-          <h1 className="project-title">{firstSlide.title}</h1>
-          <div className="members">
-            {firstSlide.authors.map((author, index) => (
-              <span key={index} className="member">
-                {author}
-              </span>
-            ))}
-          </div>
-        </section>
+        firstSlideContent != null ? (
+          <section dangerouslySetInnerHTML={{ __html: firstSlideContent }} />
+        ) : (
+          <section className="first-slide">No content found</section>
+        )
       ) : (
         <section dangerouslySetInnerHTML={{ __html: slides[currentSlide - 1] }}></section>
       )}

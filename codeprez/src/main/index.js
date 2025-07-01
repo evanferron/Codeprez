@@ -67,12 +67,14 @@ function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
   })
 
   subWindow.webContents.on('did-finish-load', () => {
-    subWindow.webContents.send('get-props', {
-      currentSlide: currentSlide,
-      nextSlide: nextSlide,
-      styleCss: styleCss,
-      timer: timer
-    })
+    setTimeout(() => {
+      subWindow.webContents.send('get-props', {
+        currentSlide: currentSlide,
+        nextSlide: nextSlide,
+        styleCss: styleCss,
+        timer: timer
+      })
+    }, 100)
   })
 }
 
