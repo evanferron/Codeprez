@@ -1,5 +1,6 @@
 {
-  "title": "Projet CodePrez - Application de Présentation avec Electron",
+  "title": "Projet CodePrez",
+  "description": "Application de présentation développée avec Electron.",
   "authors": ["Chaffaux Kevin", "Bellaud Matias", "Ferron Evan"],
   "duration": "15"
 }

@@ -1,12 +1,3 @@
-# Projet CodePrez
-
-## Application de Présentation avec Electron
-
-**Développé par :** Chaffaux Kévin, Bellaud Matias, Ferron Evan
-**Durée :** 15 minutes
-
----
-
 ### Sommaire
 
 1. Projet CodePrez
