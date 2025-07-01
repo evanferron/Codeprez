@@ -3,7 +3,16 @@ import { contextBridge, ipcRenderer } from 'electron'
 const api = {
   selectFile: async (type) => await ipcRenderer.invoke('selectFile', type),
   compileProject: async (projectName, conf, pres, style, env, assets, manualConfig = null) =>
-    await ipcRenderer.invoke('compileProject', projectName, conf, pres, style, env, assets, manualConfig),
+    await ipcRenderer.invoke(
+      'compileProject',
+      projectName,
+      conf,
+      pres,
+      style,
+      env,
+      assets,
+      manualConfig
+    ),
   importProject: async () => await ipcRenderer.invoke('importProject'),
 
   openSubPresentationPage: async (currentSlide, nextSlide, styleCss, timer) => {
@@ -35,18 +44,17 @@ if (process.contextIsolated) {
   window.api = api
 }
 
-contextBridge.exposeInMainWorld("subPresentation", {
+contextBridge.exposeInMainWorld('subPresentation', {
   getProps: (callback) => {
-    ipcRenderer.on("get-props", (e, data) => {
-      callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
-    });
+    ipcRenderer.on('get-props', (e, data) => {
+      callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer)
+    })
   },
 
   changeSlide: (callback) => {
-    ipcRenderer.on("change-slide", (e, data) => {
-      console.log("Change slide event received:", data);
-      callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer);
-    });
+    ipcRenderer.on('change-slide', (e, data) => {
+      console.log('Change slide event received:', data)
+      callback(data.currentSlide, data.nextSlide, data.styleCss, data.timer)
+    })
   }
-});
-
+})
