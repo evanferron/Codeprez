@@ -11,7 +11,8 @@
     color: #252525;
     box-sizing: border-box;
     max-width: 100vw;
-    max-height: 100vh;
+    height: 100vh;
+    padding-top: 150px;
     overflow: hidden;
     margin: 0 !important;
   }

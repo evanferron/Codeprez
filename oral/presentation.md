@@ -1,20 +1,17 @@
 ## Sommaire
 
-1. Projet CodePrez
-2. Objectifs du Projet
-3. Architecture Technique
-4. Format .codeprez
-5. Fonctionnalités Développées
-6. Démonstration - Affichage de Code
-7. Défis Techniques Relevés
-8. main
-9. preload
-10. render
-11. Fonctionnalités Bonus
-12. Architecture du Code
-13. Démonstration
-14. Conclusion
-15. Questions & Réponses
+1. Objectifs du Projet
+2. Architecture Technique
+3. Format .codeprez
+4. Fonctionnalités Développées
+5. Démonstration - Affichage de Code
+6. Défis Techniques Relevés
+7. Main, Preload, Render
+8. Fonctionnalités Bonus
+9. Architecture du Code
+10. Démonstration
+11. Conclusion
+12. Questions & Réponses
 
 ---
 
@@ -144,7 +141,7 @@ function createWindow() {
 
 ---
 
-## main
+## Main
 
 La création de nos fenêtre :
 
@@ -152,7 +149,7 @@ La création de nos fenêtre :
 
 ---
 
-## preload
+## Preload
 
 La définition du context bridge :
 
@@ -160,7 +157,7 @@ La définition du context bridge :
 
 ---
 
-## render
+## Render
 
 Le front :
 

@@ -64,7 +64,7 @@ export default function ProjectPage() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') {
-        setCurrentSlide((prev) => (slides && prev < slides.length - 1 ? prev + 1 : prev))
+        setCurrentSlide((prev) => (slides && prev < slides.length ? prev + 1 : prev))
       }
       if (e.key === 'ArrowLeft') {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev))
