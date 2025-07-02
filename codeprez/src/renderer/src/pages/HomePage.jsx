@@ -9,6 +9,7 @@ export default function HomePage() {
   const [members, setMembers] = useState('')
   const [duration, setDuration] = useState('')
   const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
   const [conf, setConf] = useState('')
   const [pres, setPres] = useState('')
   const [styleFile, setStyleFile] = useState('')
@@ -51,7 +52,7 @@ export default function HomePage() {
       return
     }
 
-    if (!conf && (!title || !members || !duration)) {
+    if (!conf && (!title || !description || !members || !duration)) {
       setError(
         'You must either provide a config.json file or fill in all manual fields (title, members, duration).'
       )
@@ -61,6 +62,7 @@ export default function HomePage() {
     const manualConfig = !conf
       ? {
           title: title,
+          description: description,
           authors: members.split(',').map((m) => m.trim()),
           duration: duration.toString()
         }
@@ -121,6 +123,18 @@ export default function HomePage() {
                   placeholder="Enter presentation title..."
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
+                  disabled={!!conf}
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="title">Presentation Subtitle</label>
+                <input
+                  type="text"
+                  id="description"
+                  placeholder="Enter presentation subtitle..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   disabled={!!conf}
                 />
               </div>

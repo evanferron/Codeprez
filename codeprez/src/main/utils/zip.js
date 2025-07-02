@@ -64,7 +64,7 @@ export const createProject = async (
   fs.mkdirSync(projectPath, { recursive: true })
 
   if (manualConfig) {
-    // Si c'est une config manuelle (title, members, duration) on créer le fichier config.json
+    // Si c'est une config manuelle (title, description, members, duration) on créer le fichier config.json
     const configPath = path.join(projectPath, 'config.json')
     fs.writeFileSync(configPath, JSON.stringify(manualConfig, null, 2))
   } else {

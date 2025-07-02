@@ -24,6 +24,7 @@ function createWindow() {
 
    mainWindow.webContents.on('did-finish-load', () => {
       mainWindow.setTitle('CodePrez')
+      mainWindow.setMenuBarVisibility(false)
     })
 
   const externalScreen = screen
@@ -70,6 +71,7 @@ function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
 
   subWindow.once('ready-to-show', () => {
     subWindow.maximize()
+    subWindow.setMenuBarVisibility(false)
   })
 
   subWindow.webContents.on('did-finish-load', () => {
