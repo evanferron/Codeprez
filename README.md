@@ -36,7 +36,7 @@ Elle propose des fonctionnalités avancées pensées pour les développeurs : af
 
 ```bash
 git clone https://github.com/tonrepo/codeprez.git
-cd codeprez
+cd codeprez/codeprez
 ```
 
 ### 3️⃣ Installation des dépendances
