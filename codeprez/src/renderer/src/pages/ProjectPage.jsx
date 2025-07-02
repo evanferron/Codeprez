@@ -121,6 +121,7 @@ export default function ProjectPage() {
       ) : (
         <section dangerouslySetInnerHTML={{ __html: slides[currentSlide - 1] }}></section>
       )}
+      <span className='pagination'>{currentSlide}</span>
     </main>
   )
 }
