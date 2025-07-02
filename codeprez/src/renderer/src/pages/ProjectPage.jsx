@@ -30,10 +30,11 @@ export default function ProjectPage() {
 
       const firstSlide = await window.api.readFirstSlideContent(projectPath)
       const firstSlideContentBuild = `
-        <div className="first-slide">
+        <div class="first-slide">
           <h1 class="project-title">${firstSlide.title}</h1>
+          <h2>${firstSlide.description}</h2>
           <div class="members">
-            ${firstSlide.authors.map((author) => `<span class="member">${author}</span>`).join('')}
+            <b/>Développé par : </b>${firstSlide.authors.map((author) => `<span class="member">${author},</span>`).join('')}
           </div>
         </div>
       `
@@ -63,7 +64,7 @@ export default function ProjectPage() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') {
-        setCurrentSlide((prev) => (slides && prev < slides.length - 1 ? prev + 1 : prev))
+        setCurrentSlide((prev) => (slides && prev < slides.length ? prev + 1 : prev))
       }
       if (e.key === 'ArrowLeft') {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev))

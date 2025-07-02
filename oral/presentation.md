@@ -1,29 +1,17 @@
-# Projet CodePrez
+## Sommaire
 
-## Application de Présentation avec Electron
-
-**Développé par :** Chaffaux Kévin, Bellaud Matias, Ferron Evan
-**Durée :** 15 minutes
-
----
-
-### Sommaire
-
-1. Projet CodePrez
-2. Objectifs du Projet
-3. Architecture Technique
-4. Format .codeprez
-5. Fonctionnalités Développées
-6. Démonstration - Affichage de Code
-7. Défis Techniques Relevés
-8. main
-9. preload
-10. render
-11. Fonctionnalités Bonus
-12. Architecture du Code
-13. Démonstration
-14. Conclusion
-15. Questions & Réponses
+1. Objectifs du Projet
+2. Architecture Technique
+3. Format .codeprez
+4. Fonctionnalités Développées
+5. Démonstration - Affichage de Code
+6. Défis Techniques Relevés
+7. Main, Preload, Render
+8. Fonctionnalités Bonus
+9. Architecture du Code
+10. Démonstration
+11. Conclusion
+12. Questions & Réponses
 
 ---
 
@@ -93,15 +81,15 @@ presentation.codeprez (zip renommé)
 
 ---
 
-### Exécution de commande bash
+## Exécution de commande bash
 
-## Commandes exécutables
+### Commandes exécutables
 
 ```bash
 echo hello
 ```
 
-## Exécution d'un script
+### Exécution d'un script
 
 ```bash
 node index.js
@@ -153,7 +141,7 @@ function createWindow() {
 
 ---
 
-## main
+## Main
 
 La création de nos fenêtre :
 
@@ -161,7 +149,7 @@ La création de nos fenêtre :
 
 ---
 
-## preload
+## Preload
 
 La définition du context bridge :
 
@@ -169,7 +157,7 @@ La définition du context bridge :
 
 ---
 
-## render
+## Render
 
 Le front :
 
@@ -241,11 +229,11 @@ src
 
 ### Application fonctionnelle
 
-Une alternative viable aux outils de présentation traditionnels, optimisée pour les développeurs
+- Une alternative viable aux outils de présentation traditionnels, optimisée pour les développeurs
 
 ### Prêt pour la production
 
-Packaging multi-plateforme et association de fichiers
+- Packaging multi-plateforme et association de fichiers
 
 ---
 
