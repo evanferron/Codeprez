@@ -129,15 +129,14 @@ function createWindow() {
 
 ### Communication Inter-Process
 
-- **ContextBridge** pour la sécurité
+- **ContextBridge** pour la sécurité (preload script)
 - **IPC** pour les échanges Main ↔ Renderer
-- Gestion asynchrone des opérations
+- Utilisation de send et invoke
 
-### Gestion Multi-plateforme
+### Gestion de fichier
 
-- Chemins de fichiers adaptés
-- Associations de types de fichiers
-- Packaging spécifique par OS
+- Lecture de fichier
+- Création de zip
 
 ---
 
@@ -165,6 +164,14 @@ Le front :
 
 ---
 
+## Zip
+
+La gestion des fichiers :
+
+[Code](./assets/zip.js#1-84)
+
+---
+
 ## Fonctionnalités Bonus
 
 ### Mode Présentation
@@ -189,28 +196,19 @@ src
   ├── main
   │  ├── index.js
   │  └── utils
-  │    ├── eventHandler.js
-  │    ├── markdown.js
-  │    └── zip.js
+  │    └── ...
   ├── preload
   │  └── index.js
   └── renderer
     ├── index.html
     └── src
       ├── assets
-      │  ├── base.css
-      │  ├── electron.svg
-      │  └── wavy-lines.svg
+      │  └── ...
       ├── main.jsx
       ├── pages
-      │  ├── ErrorPage.jsx
-      │  ├── HomePage.jsx
-      │  ├── ProjectPage.jsx
-      │  └── SubProjectPage.jsx
+      │  └── ...
       └── styles
-        ├── home.css
-        ├── ProjectPage.css
-        └── SubProjectPage.css
+        └── ...
 ```
 
 ---
