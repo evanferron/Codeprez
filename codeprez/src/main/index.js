@@ -73,7 +73,7 @@ function createSubWindow(currentSlide, nextSlide, styleCss, timer) {
   })
 
   subWindow.webContents.on('did-finish-load', () => {
-    mainWindow.setTitle('CodePrez')
+    subWindow.setTitle('CodePrez - Sub Presentation')
     setTimeout(() => {
       subWindow.webContents.send('get-props', {
         currentSlide: currentSlide,
