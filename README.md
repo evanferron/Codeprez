@@ -48,3 +48,17 @@ npm install
 ```bash
 npm run start
 ```
+
+### packaging 
+
+en se metttant bien dans le dossier codeprez
+
+```bash
+npm run build:win
+```
+```bash
+npm run build:mac
+```
+```bash
+npm run build:linux
+```
